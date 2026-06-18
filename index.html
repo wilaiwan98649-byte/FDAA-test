@@ -1,78 +1,80 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FocusMind Digital Attention Assessment (FDAA)</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>การประเมินสมาธิและการจดจ่อด้วยระบบดิจิทัล (FocusMind DAT)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="card">
+        <h1>การประเมินสมาธิและการจดจ่อด้วยระบบดิจิทัล (FocusMind DAT)</h1>
 
-<div class="card">
-    <h1>ระบบประเมินสมาธิและการจดจ่อดิจิทัล (FocusMind FDAA)</h1>
+        <div id="student-info-section" style="background: #f8fafc; padding: 20px; border-radius: 12px; margin-bottom: 30px; border: 1px solid #e2e8f0; text-align: left;">
+            <h3 style="margin-top: 0; color: #0d9488;">ข้อมูลพื้นฐานของนักเรียน</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div>
+                    <label><b>เลขประจำตัวนักเรียน:</b></label>
+                    <input type="text" id="studentId" placeholder="เช่น 12345" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
+                </div>
+                <div>
+                    <label><b>ระดับชั้น:</b></label>
+                    <input type="text" id="studentGrade" placeholder="เช่น ม.4/1" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
+                </div>
+                <div>
+                    <label><b>เกรดเฉลี่ยรวมล่าสุด (GPAX):</b></label>
+                    <input type="number" id="studentGpa" step="0.01" min="0" max="4" placeholder="เช่น 3.50" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
+                </div>
+                <div>
+                    <label><b>จำนวนชั่วโมงการนอนเมื่อคืน (ชั่วโมง):</b></label>
+                    <input type="number" id="sleepHours" step="0.5" min="0" placeholder="เช่น 7" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
+                </div>
+                <div>
+                    <label><b>เวลาดูจอ (เฉลี่ยต่อวัน/ชั่วโมง):</b></label>
+                    <input type="number" id="screenTime" step="0.5" min="0" placeholder="เช่น 4.5" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
+                </div>
+                <div>
+                    <label><b>การรับประทานอาหารเช้าวันนี้:</b></label>
+                    <select id="breakfastStatus" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
+                        <option value="">-- เลือกรายการ --</option>
+                        <option value="รับประทานแล้ว">รับประทานอาหารเช้าแล้ว</option>
+                        <option value="ไม่ได้รับประทาน">ไม่ได้รับประทานอาหารเช้า</option>
+                    </select>
+                </div>
+            </div>
+        </div>
 
-    <div id="student-info-section" style="background: #f8fafc; padding: 20px; border-radius: 12px; margin-bottom: 30px; border: 1px solid #e2e8f0; text-align: left;">
-        <h3 style="margin-top: 0; color: #0d9488;">ข้อมูลพื้นฐานของนักเรียน</h3>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-            <div>
-                <label><b>เลขประจำตัวนักเรียน:</b></label>
-                <input type="text" id="studentId" placeholder="เช่น 12345" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
-            </div>
-            <div>
-                <label><b>ระดับชั้น:</b></label>
-                <input type="text" id="studentGrade" placeholder="เช่น ม.4/1" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
-            </div>
-            <div>
-                <label><b>เกรดเฉลี่ยรวมล่าสุด (GPAX):</b></label>
-                <input type="number" id="studentGpa" step="0.01" min="0" max="4" placeholder="เช่น 3.50" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
-            </div>
-            <div>
-                <label><b>จำนวนชั่วโมงการนอนเมื่อคืน (ชั่วโมง):</b></label>
-                <input type="number" id="sleepHours" step="0.5" min="0" placeholder="เช่น 7" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
-            </div>
-            <div>
-                <label><b>เวลาดูจอ (เฉลี่ยต่อวัน/ชั่วโมง):</b></label>
-                <input type="number" id="screenTime" step="0.5" min="0" placeholder="เช่น 4.5" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
-            </div>
-            <div>
-                <label><b>การรับประทานอาหารเช้าวันนี้:</b></label>
-                <select id="breakfastStatus" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
-                    <option value="">-- เลือกรายการ --</option>
-                    <option value="รับประทานแล้ว">รับประทานอาหารเช้าแล้ว</option>
-                    <option value="ไม่ได้รับประทาน">ไม่ได้รับประทานอาหารเช้า</option>
-                </select>
-            </div>
+        <h2>ส่วนที่ 1: แบบทดสอบความแม่นยำในการกวาดสายตา (ค้นหาเลข 2)</h2>
+        <p>คำชี้แจง: ค้นหาและแตะที่ตัวเลข 2 ทุกตัวให้ครบ 15 ตัว ภายในเวลา <span id="digitTimer">15</span> วินาที (หากกดผิดคะแนนจะติดลบ)</p>
+        <div id="grid" class="grid"></div>
+        <p id="digitResult">คะแนน: 0</p>
+
+        <h2>ส่วนที่ 2: แบบทดสอบความไวและการแยกแยะสี (Stroop Test)</h2>
+        <p>คำชี้แจง: เลือก "สีของคำ" ที่มองเห็น (ห้ามเลือกตามคำอ่าน) ให้เร็วและถูกต้องที่สุด</p>
+        
+        <div class="stroop-container">
+            <div id="stroopWord" class="stroop-word">คำถามจะขึ้นตรงนี้</div>
+            <p id="stroopTimerContainer">เวลาคงเหลือ: <span id="stroopTimer">30</span> วินาที</p>
+            <button id="startStroopBtn" class="btn-start">เริ่มทำส่วนที่ 2</button>
+        </div>
+
+        <div class="options">
+            <button class="btn btn-red">แดง</button>
+            <button class="btn btn-green">เขียว</button>
+            <button class="btn btn-blue">น้ำเงิน</button>
+            <button class="btn btn-yellow">เหลือง</button>
+        </div>
+        <p id="stroopResult">คะแนน: 0</p>
+
+        <div style="margin-top: 30px; border-top: 2px dashed #cbd5e1; padding-top: 20px;">
+            <button id="calculateBtn" style="background: #0d9488; color: white; padding: 12px 30px; border: none; border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold;">ประมวลผลคะแนนสรุป</button>
+            <h2 id="final" style="margin-top: 20px; color: #1e293b;">ยังไม่ได้ประมวลผล</h2>
         </div>
     </div>
 
-    <h2>ส่วนที่ 1: แบบทดสอบความแม่นยำในการกวาดสายตา (ค้นหาเลข 2)</h2>
-    <p>คำชี้แจง: ค้นหาและแตะที่ตัวเลข 2 ทุกตัวให้ครบ 15 ตัว ภายในเวลา <span id="digitTimer">15</span> วินาที (หากกดผิดคะแนนจะติดลบ)</p>
-    <div id="grid" class="grid"></div>
-    <p id="digitResult">คะแนน: 0</p>
-
-  <hr>
-
- <h2>ส่วนที่ 2: แบบทดสอบความไวและการแยกแยะสี (Stroop Test)</h2>
-    <p>คำชี้แจง: เลือก "สีของคำ" ที่มองเห็น (ห้ามเลือกตามคำอ่าน) ให้เร็วและถูกต้องที่สุด</p>
-    
-  <div class="buttons">
-    <button onclick="answer('red')">แดง</button>
-    <button onclick="answer('green')">เขียว</button>
-    <button onclick="answer('blue')">น้ำเงิน</button>
-    <button onclick="answer('orange')">เหลือง</button>
-  </div>
-
-  <p id="stroopResult">คะแนน: 0</p>
-
-  <hr>
-
-  <button onclick="calculate()">คำนวณ Attention Index</button>
-  <h2 id="final">ยังไม่ได้คำนวณ</h2>
-</div>
-
-<script src="app.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
