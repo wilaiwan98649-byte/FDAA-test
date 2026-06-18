@@ -1,67 +1,55 @@
+window.onload = function() {
+    // ---------------- Digit Test ----------------
+    let digitScore = 0;
+    let digitActive = true;
+    const nums = [];
 
-// ---------------- Digit Test ----------------
-let digitScore = 0;
-let digitActive = true;
+    for (let i = 0; i < 10; i++) nums.push(2);
 
-const nums = [];
-for(let i=0;i<10;i++) nums.push(2);
-
-while(nums.length < 100){
-  let n = Math.floor(Math.random()*8)+1;
-  if(n >= 2) n++;
-  nums.push(n);
-}
-
-nums.sort(()=>Math.random()-0.5);
-
-const grid = document.getElementById('grid');
-
-nums.forEach(n=>{
-  const c = document.createElement('div');
-  c.className='cell';
-  c.textContent=n;
-
-  c.onclick = ()=>{
-    if(!digitActive || c.dataset.done) return;
-
-    c.dataset.done = true;
-
-    if(n===2){
-      digitScore++;
-      c.classList.add('correct');
-    }else{
-      c.classList.add('wrong');
+    while (nums.length < 100) {
+        let n = Math.floor(Math.random() * 8) + 1;
+        if (n >= 2) n++;
+        nums.push(n);
     }
 
-    document.getElementById('digitResult').textContent =
-      'คะแนน: ' + digitScore;
-  };
+    nums.sort(() => Math.random() - 0.5);
 
-  grid.appendChild(c);
-});
+    const grid = document.getElementById('grid');
 
-let digitTime = 30;
+    nums.forEach(n => {
+        const c = document.createElement('div');
+        c.className = 'cell';
+        c.textContent = n;
+        c.onclick = () => {
+            if (!digitActive || c.dataset.done) return;
+            c.dataset.done = true;
+            if (n === 2) {
+                digitScore++;
+                c.classList.add('correct');
+            } else {
+                c.classList.add('wrong');
+            }
+            document.getElementById('digitResult').textContent = 'คะแนน: ' + digitScore;
+        };
+        grid.appendChild(c);
+    });
 
-const digitCountdown = setInterval(()=>{
-  digitTime--;
-  document.getElementById('digitTimer').textContent = digitTime;
+    let digitTime = 30;
+    const digitCountdown = setInterval(() => {
+        digitTime--;
+        document.getElementById('digitTimer').textContent = digitTime;
+        if (digitTime <= 0) {
+            clearInterval(digitCountdown);
+            digitActive = false;
+        }
+    }, 1000);
 
-  if(digitTime <= 0){
-    clearInterval(digitCountdown);
-    digitActive = false;
-  }
-},1000);
-
-
-// ---------------- Stroop Test ----------------
-const words = ['แดง','เขียว','น้ำเงิน','เหลือง'];
-const colors = ['red','green','blue','orange'];
-
-let currentColor = '';
-let stroopCorrect = 0;
-let stroopActive = false;
-let stroopTime = 30;
-let stroopCountdown;
+    // ---------------- Stroop Test ----------------
+    const words = ['แดง', 'เขียว', 'น้ำเงิน', 'เหลือง'];
+    const colors = ['red', 'green', 'blue', 'orange'];
+    let currentColor = '';
+    let stroopCorrect = 0;
+    let stroopActive = false;
 
 function startStroop(){
 
@@ -132,4 +120,5 @@ function calculate(){
       'Attention Index = ' +
       attention.toFixed(1) +
       ' (' + level + ')';
-}
+};
+};
