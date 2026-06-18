@@ -12,23 +12,52 @@
 <body>
 
 <div class="card">
-  <h1>FocusMind Digital Attention Assessment</h1>
+    <h1>ระบบประเมินสมาธิและการจดจ่อดิจิทัล (FocusMind FDAA)</h1>
 
-  <h2>Digit Cancellation Test</h2>
-  <p>แตะเลข 2 ทุกตัวภายใน <span id="digitTimer">30</span> วินาที</p>
-  <div id="grid" class="grid"></div>
-  <p id="digitResult">คะแนน: 0</p>
+    <div id="student-info-section" style="background: #f8fafc; padding: 20px; border-radius: 12px; margin-bottom: 30px; border: 1px solid #e2e8f0; text-align: left;">
+        <h3 style="margin-top: 0; color: #0d9488;">ข้อมูลพื้นฐานของนักเรียน</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div>
+                <label><b>เลขประจำตัวนักเรียน:</b></label>
+                <input type="text" id="studentId" placeholder="เช่น 12345" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
+            </div>
+            <div>
+                <label><b>ระดับชั้น:</b></label>
+                <input type="text" id="studentGrade" placeholder="เช่น ม.4/1" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
+            </div>
+            <div>
+                <label><b>เกรดเฉลี่ยรวมล่าสุด (GPAX):</b></label>
+                <input type="number" id="studentGpa" step="0.01" min="0" max="4" placeholder="เช่น 3.50" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
+            </div>
+            <div>
+                <label><b>จำนวนชั่วโมงการนอนเมื่อคืน (ชั่วโมง):</b></label>
+                <input type="number" id="sleepHours" step="0.5" min="0" placeholder="เช่น 7" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
+            </div>
+            <div>
+                <label><b>เวลาดูจอ (เฉลี่ยต่อวัน/ชั่วโมง):</b></label>
+                <input type="number" id="screenTime" step="0.5" min="0" placeholder="เช่น 4.5" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
+            </div>
+            <div>
+                <label><b>การรับประทานอาหารเช้าวันนี้:</b></label>
+                <select id="breakfastStatus" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
+                    <option value="">-- เลือกรายการ --</option>
+                    <option value="รับประทานแล้ว">รับประทานอาหารเช้าแล้ว</option>
+                    <option value="ไม่ได้รับประทาน">ไม่ได้รับประทานอาหารเช้า</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <h2>ส่วนที่ 1: แบบทดสอบความแม่นยำในการกวาดสายตา (ค้นหาเลข 2)</h2>
+    <p>คำชี้แจง: ค้นหาและแตะที่ตัวเลข 2 ทุกตัวให้ครบ 15 ตัว ภายในเวลา <span id="digitTimer">15</span> วินาที (หากกดผิดคะแนนจะติดลบ)</p>
+    <div id="grid" class="grid"></div>
+    <p id="digitResult">คะแนน: 0</p>
 
   <hr>
 
-  <h2>Stroop Test</h2>
-  <p>เลือกสีของตัวอักษร ไม่ใช่คำที่อ่าน</p>
-  <p>เวลาคงเหลือ: <span id="stroopTimer">30</span> วินาที</p>
-
-  <div id="stroopWord" class="stroop">กดเริ่ม</div>
-
-  <button onclick="startStroop()">เริ่ม Stroop Test</button>
-
+ <h2>ส่วนที่ 2: แบบทดสอบความไวและการแยกแยะสี (Stroop Test)</h2>
+    <p>คำชี้แจง: เลือก "สีของคำ" ที่มองเห็น (ห้ามเลือกตามคำอ่าน) ให้เร็วและถูกต้องที่สุด</p>
+    
   <div class="buttons">
     <button onclick="answer('red')">แดง</button>
     <button onclick="answer('green')">เขียว</button>
