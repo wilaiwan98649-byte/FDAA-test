@@ -5,39 +5,43 @@ window.onload = function() {
     let digitCountdown;
     let nums = [];
 
-    // ฟังก์ชันสร้างและกระจายตัวเลขไม่ให้เลข 2 อยู่ติดกันเกินไป
+    // ฟังก์ชันคอยอัปเดตตัวเลขจำนวนนักเรียนที่ถูกสะสมไว้ในเครื่องปัจจุบัน
+    function updateDataCountDisplay() {
+        const storedData = localStorage.getItem('allStudentResults');
+        const count = storedData ? JSON.parse(storedData).length : 0;
+        const countText = document.getElementById('dataCountText');
+        if (countText) {
+            countText.textContent = `จำนวนข้อมูลที่บันทึกสะสมอยู่ตอนนี้: ${count} คน`;
+        }
+    }
+    updateDataCountDisplay();
+
     function generateDistributedGrid() {
         nums = [];
-        // ใส่เลข 2 จำนวน 15 ตัวลงไปก่อน
         for (let i = 0; i < 15; i++) nums.push(2);
-        
-        // เติมเลขกระจายตัวอื่น ๆ (1, 3-9) ให้ครบ 100 ช่อง
         while (nums.length < 100) {
             let n = Math.floor(Math.random() * 8) + 1;
             if (n >= 2) n++;
             nums.push(n);
         }
 
-        // ลูปสุ่มตำแหน่งแบบจำกัดเงื่อนไข (บังคับห้ามเลข 2 ชนกันตรง ๆ)
         let attempts = 0;
         while (attempts < 100) {
             nums.sort(() => Math.random() - 0.5);
             let hasAdjacentTwos = false;
             for (let i = 0; i < nums.length - 1; i++) {
-                // เช็กช่องข้าง ๆ และเช็กแถวดิ่ง (ตารางกว้าง 10 ช่อง)
                 if ((nums[i] === 2 && nums[i+1] === 2) || (i + 10 < 100 && nums[i] === 2 && nums[i+10] === 2)) {
                     hasAdjacentTwos = true;
                     break;
                 }
             }
-            if (!hasAdjacentTwos) break; // ถ้ากระจายตัวสวยงามไม่มีชนกันแล้ว ให้หยุดสุ่ม
+            if (!hasAdjacentTwos) break;
             attempts++;
         }
 
-        // วาดตารางลงหน้าเว็บ
         const grid = document.getElementById('grid');
         if (grid) {
-            grid.innerHTML = ''; // ล้างตารางเก่าออกก่อน
+            grid.innerHTML = '';
             nums.forEach(n => {
                 const c = document.createElement('div');
                 c.className = 'cell';
@@ -60,10 +64,8 @@ window.onload = function() {
         }
     }
 
-    // เรียกสร้างตารางครั้งแรกตอนเปิดโปรแกรม
     generateDistributedGrid();
 
-    // บังคับกรอกข้อมูลทั่วไปให้ครบถ้วนถ้วนก่อนเริ่มทำ
     const nextBtn = document.getElementById('nextToTestBtn');
     if (nextBtn) {
         nextBtn.onclick = function() {
@@ -74,7 +76,6 @@ window.onload = function() {
             const screen = document.getElementById('screenTime').value.trim();
             const breakfast = document.getElementById('breakfastStatus').value;
 
-            // ตรวจเช็กค่าว่าง
             if (!id || !grade || !gpa || !sleep || !screen || !breakfast) {
                 alert('⚠️ กรุณากรอกข้อมูลทั่วไปและพฤติกรรมสุขภาพให้ครบทุกช่องก่อนเริ่มทำแบบทดสอบครับ');
                 return;
@@ -197,39 +198,49 @@ window.onload = function() {
         const screen = document.getElementById('screenTime').value;
         const breakfast = document.getElementById('breakfastStatus').value;
 
+        // --- ระบบ AUTO SAVE บันทึกอัตโนมัติกันลืม ---
+        const currentResult = {
+            studentId: id,
+            grade: grade,
+            gpa: gpa,
+            sleep: sleep,
+            screen: screen,
+            breakfast: breakfast,
+            digitScore: digitScore,
+            stroopScore: stroopCorrect,
+            attentionScore: attention.toFixed(1),
+            level: level
+        };
+
+        // ดึงอาเรย์เก่าจากเครื่องมาเติมตัวใหม่ต่อท้ายเข้าไป
+        let localData = localStorage.getItem('allStudentResults');
+        let dataArray = localData ? JSON.parse(localData) : [];
+        
+        // ตรวจสอบเพื่อป้องกันการบันทึกข้อมูลซ้ำของรหัสนักเรียนเดิมในรอบเดียวกัน
+        const isDuplicate = dataArray.some(item => item.studentId === id && item.digitScore === digitScore && item.stroopScore === stroopCorrect);
+        if(!isDuplicate) {
+            dataArray.push(currentResult);
+            localStorage.setItem('allStudentResults', JSON.stringify(dataArray));
+            updateDataCountDisplay();
+        }
+
+        // วาดหน้าผลสรุปการประเมิน
         document.getElementById('final').innerHTML = `
             <div style="text-align: left; background: #e0f2f1; padding: 15px; border-radius: 8px; margin-top: 15px; font-weight: normal; font-size: 16px;">
+                <p style="color: #00796b; font-weight: bold; margin-top: 0;">✅ บันทึกข้อมูลนักเรียนเข้าระบบรวมอัตโนมัติเรียบร้อยแล้ว</p>
                 <p><b>ข้อมูลผู้ทดสอบ:</b> รหัส: ${id} | ชั้น: ${grade} | GPAX: ${gpa}</p>
                 <p><b>พฤติกรรมสุขภาพ:</b> นอนเมื่อคืน: ${sleep} ชม. | เวลาหน้าจอ: ${screen} ชม./วัน | มื้อเช้า: ${breakfast}</p>
                 <hr style="border: 0; border-top: 1px solid #b2dfdb;">
                 <p style="font-size: 22px; font-weight: bold; color: #00796b; margin: 5px 10px 10px 0; display: inline-block;">
                     Attention Score = ${attention.toFixed(1)} (${level})
                 </p>
-                <button id="downloadCsvBtn" style="background: #00796b; color: white; padding: 6px 15px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold; float: right; margin-top: 5px; margin-left: 10px;">📥 ดาวน์โหลดข้อมูล (.CSV)</button>
-                <button id="resetTestBtn" style="background: #64748b; color: white; padding: 6px 15px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold; float: right; margin-top: 5px;">🔄 เริ่มทำแบบทดสอบใหม่</button>
+                <button id="resetTestBtn" style="background: #64748b; color: white; padding: 8px 20px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold; float: right; margin-top: 5px;">🔄 สลับหน้าจอให้คนถัดไปทำต่อ</button>
                 <div style="clear: both;"></div>
             </div>
         `;
 
-        // ปุ่มส่งออกข้อมูล CSV
-        document.getElementById('downloadCsvBtn').onclick = function() {
-            const headers = ['StudentID', 'Grade', 'GPAX', 'SleepHours', 'ScreenTime', 'Breakfast', 'Digit_Score', 'Stroop_Score', 'Attention_Score', 'Evaluation_Level'];
-            const rowData = [id, grade, gpa, sleep, screen, breakfast, digitScore, stroopCorrect, attention.toFixed(1), level];
-            const csvContent = "\uFEFF" + [headers.join(','), rowData.join(',')].join('\n');
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement("a");
-            const url = URL.createObjectURL(blob);
-            link.setAttribute("href", url);
-            link.setAttribute("download", `FocusMind_DAT_Result_${id}.csv`);
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        };
-
-        // ปุ่มสำหรับรีเซ็ตหน้าจอเพื่อเริ่มทำใหม่ (สำหรับผู้เล่นคนถัดไป)
+        // ปุ่มคำสั่งย้อนกลับไปเริ่มทำใหม่สำหรับนักเรียนคนถัดไป
         document.getElementById('resetTestBtn').onclick = function() {
-            // ล้างค่าข้อมูลทั่วไปในฟอร์ม
             document.getElementById('studentId').value = '';
             document.getElementById('studentGrade').value = '';
             document.getElementById('studentGpa').value = '';
@@ -237,7 +248,6 @@ window.onload = function() {
             document.getElementById('screenTime').value = '';
             document.getElementById('breakfastStatus').value = '';
 
-            // รีเซ็ตค่าคะแนนและเวลากลับเป็นค่าเริ่มต้น
             digitScore = 0;
             digitTime = 15;
             digitActive = false;
@@ -254,13 +264,56 @@ window.onload = function() {
             document.getElementById('stroopWord').textContent = 'คำถามจะขึ้นตรงนี้';
             document.getElementById('stroopWord').style.color = '#1e293b';
 
-            // สลับการแสดงผลกลับไปหน้ากรอกข้อมูลแรกสุด
             document.getElementById('final').textContent = 'ยังไม่ได้ประมวลผล';
             document.getElementById('main-test-area').style.display = 'none';
             document.getElementById('student-info-section').style.display = 'block';
 
-            // สร้างกระดานตัวเลขชุดใหม่ที่มีการกระจายตัวเรียบร้อย
             generateDistributedGrid();
+            window.scrollTo(0,0); // เลื่อนหน้าจอกลับไปด้านบนสุด
+        };
+    }
+
+    // --- ฟังก์ชันดาวน์โหลดข้อมูลรวมทั้งหมดเป็นไฟล์ CSV ไฟล์เดียว (สำหรับคุณครูใช้ตอนท้ายคาบ) ---
+    const downloadAllBtn = document.getElementById('downloadAllCsvBtn');
+    if(downloadAllBtn) {
+        downloadAllBtn.onclick = function() {
+            const localData = localStorage.getItem('allStudentResults');
+            const dataArray = localData ? JSON.parse(localData) : [];
+
+            if(dataArray.length === 0) {
+                alert('❌ ยังไม่มีข้อมูลนักเรียนในระบบสะสมในขณะนี้ครับ');
+                return;
+            }
+
+            const headers = ['StudentID', 'Grade', 'GPAX', 'SleepHours', 'ScreenTime', 'Breakfast', 'Digit_Score', 'Stroop_Score', 'Attention_Score', 'Evaluation_Level'];
+            const csvRows = [headers.join(',')];
+
+            dataArray.forEach(item => {
+                const row = [
+                    item.studentId,
+                    item.grade,
+                    item.gpa,
+                    item.sleep,
+                    item.screen,
+                    item.breakfast,
+                    item.digitScore,
+                    item.stroopScore,
+                    item.attentionScore,
+                    `"${item.level}"` // ใส่ฟันหนูครอบเพื่อความปลอดภัยกรณีมีเว้นวรรค
+                ];
+                csvRows.push(row.join(','));
+            });
+
+            const csvContent = "\uFEFF" + csvRows.join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", `FocusMind_DAT_All_Results.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         };
     }
 };
