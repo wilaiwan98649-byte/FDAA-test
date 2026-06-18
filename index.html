@@ -15,44 +15,53 @@
 
         <div id="student-info-section" style="background: #f8fafc; padding: 20px; border-radius: 12px; margin-bottom: 30px; border: 1px solid #e2e8f0; text-align: left;">
             <h3 style="margin-top: 0; color: #0d9488;">ข้อมูลพื้นฐานและพฤติกรรมสุขภาพ</h3>
-            <p style="color: #64748b; font-size: 14px; margin-bottom: 15px;">* กรุณากรอกข้อมูลตามความเป็นจริงเพื่อการประมวลผลที่แม่นยำ</p>
+            <p style="color: #64748b; font-size: 14px; margin-bottom: 15px;">* กรุณากรอกข้อมูลให้ครบทุกช่องเพื่อการประมวลผลที่แม่นยำ</p>
             
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
                 <div>
                     <label><b>เลขประจำตัวนักเรียน:</b></label>
-                    <input type="text" id="studentId" placeholder="เช่น 12345" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;">
+                    <input type="text" id="studentId" placeholder="เช่น 12345" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
                 </div>
                 <div>
                     <label><b>ระดับชั้น:</b></label>
-                    <input type="text" id="studentGrade" placeholder="เช่น ม.4/1" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;">
+                    <input type="text" id="studentGrade" placeholder="เช่น ม.4/1" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
+                </div>
+                <div>
+                    <label><b>เพศกำเนิด:</b></label>
+                    <select id="studentGender" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
+                        <option value="">-- เลือกเพศ --</option>
+                        <option value="ชาย">ชาย</option>
+                        <option value="หญิง">หญิง</option>
+                        <option value="ไม่ระบุ">ไม่ต้องการระบุ</option>
+                    </select>
                 </div>
                 <div>
                     <label><b>เกรดเฉลี่ย (GPAX):</b></label>
-                    <input type="number" id="studentGpa" step="0.01" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;">
+                    <input type="number" id="studentGpa" step="0.01" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
                 </div>
                 <div>
                     <label><b>เมื่อคืนนอนหลับกี่ชั่วโมง:</b></label>
-                    <input type="number" id="sleepHours" step="0.5" placeholder="เช่น 7" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;">
+                    <input type="number" id="sleepHours" step="0.5" placeholder="เช่น 7" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
                 </div>
                 <div>
-                    <label><b>เวลาหน้าจอ (บันเทิง/ชม.ต่อวัน):</b></label>
-                    <input type="number" id="screenTime" step="0.5" placeholder="เช่น 2.5" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;">
+                    <label><b>เวลาดูจอ (บันเทิง/ชม.ต่อวัน):</b></label>
+                    <input type="number" id="screenTime" step="0.5" placeholder="เช่น 2.5" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
                 </div>
                 <div>
                     <label><b>กินอาหารเช้าบ่อยแค่ไหน (วันต่อสัปดาห์):</b></label>
-                    <input type="number" id="breakfastDays" min="0" max="7" placeholder="0-7 วัน" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;">
+                    <input type="number" id="breakfastDays" min="0" max="7" placeholder="0-7 วัน" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
                 </div>
                 <div>
                     <label><b>ออกกำลังกายบ่อยแค่ไหน (วันต่อสัปดาห์):</b></label>
-                    <input type="number" id="exerciseDays" min="0" max="7" placeholder="0-7 วัน" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;">
+                    <input type="number" id="exerciseDays" min="0" max="7" placeholder="0-7 วัน" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
                 </div>
                 <div>
                     <label><b>ดื่มน้ำเปล่าประมาณกี่แก้วต่อวัน:</b></label>
-                    <input type="number" id="waterGlasses" min="0" placeholder="เช่น 8" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;">
+                    <input type="number" id="waterGlasses" min="0" placeholder="เช่น 8" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
                 </div>
-                <div style="grid-column: span 2;">
+                <div>
                     <label><b>ระดับความเครียด/เหนื่อยล้าในตอนนี้:</b></label>
-                    <select id="stressLevel" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;">
+                    <select id="stressLevel" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
                         <option value="">-- เลือกความรู้สึก --</option>
                         <option value="5">สดชื่น/ไม่เครียดเลย</option>
                         <option value="4">ปกติ/เครียดเล็กน้อย</option>
