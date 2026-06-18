@@ -1,7 +1,7 @@
 window.onload = function() {
     // ตั้งค่าตัวแปรสำหรับแบบทดสอบส่วนที่ 1
     let digitScore = 0;
-    let digitActive = false; // ยังไม่เปิดใช้งานจนกว่าจะกดปุ่มต่อไป
+    let digitActive = false; 
     let digitTime = 15;
     const nums = [];
 
@@ -9,18 +9,11 @@ window.onload = function() {
     const nextBtn = document.getElementById('nextToTestBtn');
     if (nextBtn) {
         nextBtn.onclick = function() {
-            // ตรวจสอบขั้นต้นว่ากรอกข้อมูลหรือยัง (เลือกที่จะแจ้งเตือนได้หากจำเป็น)
-            const idInput = document.getElementById('studentId').value;
-            if(!idInput) {
-                alert('กรุณากรอกเลขประจำตัวนักเรียนก่อนเริ่มทำแบบทดสอบครับ');
-                return;
-            }
-
             // ซ่อนหน้ากรอกข้อมูล และเปิดหน้าทำแบบทดสอบขึ้นมา
             document.getElementById('student-info-section').style.display = 'none';
             document.getElementById('main-test-area').style.display = 'block';
             
-            // เริ่มต้นเปิดการทำงานระบบทำสอบส่วนที่ 1 และเริ่มจับเวลาทันทีเมื่อเปิดหน้านี้
+            // เริ่มต้นเปิดการทำงานระบบทำสอบส่วนที่ 1 และเริ่มจับเวลาถอยหลังทันที
             digitActive = true;
             startDigitTimer();
         };
@@ -63,7 +56,7 @@ window.onload = function() {
         if (grid) grid.appendChild(c);
     });
 
-    // ฟังก์ชันเริ่มจับเวลาส่วนที่ 1 (จะถูกเรียกหลังจากกดปุ่ม ต่อไป)
+    // ฟังก์ชันเริ่มจับเวลาส่วนที่ 1
     function startDigitTimer() {
         const digitCountdown = setInterval(() => {
             digitTime--;
@@ -73,7 +66,6 @@ window.onload = function() {
             if (digitTime <= 0) {
                 clearInterval(digitCountdown);
                 digitActive = false;
-                // แสดงข้อความเตือนเมื่อหมดเวลาส่วนที่ 1
                 alert('หมดเวลาสำหรับส่วนที่ 1 แล้วครับ กรุณาทำส่วนที่ 2 ต่อได้เลย');
             }
         }, 1000);
@@ -164,12 +156,12 @@ window.onload = function() {
         if(attention >= 80) level = 'ดีมาก (Excellent)';
         else if(attention >= 60) level = 'ปกติ (Normal)';
 
-        const id = document.getElementById('studentId').value || 'ไม่ได้ระบุ';
-        const grade = document.getElementById('studentGrade').value || 'ไม่ได้ระบุ';
-        const gpa = document.getElementById('studentGpa').value || 'ไม่ได้ระบุ';
-        const sleep = document.getElementById('sleepHours').value || 'ไม่ได้ระบุ';
-        const screen = document.getElementById('screenTime').value || 'ไม่ได้ระบุ';
-        const breakfast = document.getElementById('breakfastStatus').value || 'ไม่ได้ระบุ';
+        const id = document.getElementById('studentId') ? document.getElementById('studentId').value : 'ไม่ได้ระบุ';
+        const grade = document.getElementById('studentGrade') ? document.getElementById('studentGrade').value : 'ไม่ได้ระบุ';
+        const gpa = document.getElementById('studentGpa') ? document.getElementById('studentGpa').value : 'ไม่ได้ระบุ';
+        const sleep = document.getElementById('sleepHours') ? document.getElementById('sleepHours').value : 'ไม่ได้ระบุ';
+        const screen = document.getElementById('screenTime') ? document.getElementById('screenTime').value : 'ไม่ได้ระบุ';
+        const breakfast = document.getElementById('breakfastStatus') ? document.getElementById('breakfastStatus').value : 'ไม่ได้ระบุ';
 
         document.getElementById('final').innerHTML = `
             <div style="text-align: left; background: #e0f2f1; padding: 15px; border-radius: 8px; margin-top: 15px; font-weight: normal; font-size: 16px;">
