@@ -6,7 +6,7 @@
     <title>การประเมินสมาธิและการจดจ่อด้วยระบบดิจิทัล (FocusMind DAT)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2 family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -84,6 +84,15 @@
                 <p style="margin: 3px 0;">• Digit Cancellation Test (Sustained Attention Index) - Lezak, M. D. (2012). <i>Neuropsychological Assessment</i>.</p>
                 <p style="margin: 3px 0;">• Stroop Color-Word Test (Cognitive Inhibition Base) - Scarpina, F., & Tagini, S. (2015). <i>Frontiers in Psychology</i>.</p>
             </div>
+        </div>
+
+        <div id="teacher-control-zone" style="margin-top: 25px; background: #fffbeb; padding: 15px; border-radius: 12px; border: 1px solid #fef08a; text-align: left;">
+            <span style="font-weight: bold; color: #b45309; font-size: 14px;">🛠️ แผงควบคุมระบบสะสมข้อมูลสำหรับผู้วิจัย/คุณครู:</span>
+            <div style="margin-top: 10px; display: flex; gap: 10px;">
+                <button id="downloadAllCsvBtn" style="background: #b45309; color: white; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold;">📥 ดาวน์โหลดข้อมูลนักเรียนทั้งหมด (.CSV)</button>
+                <button id="clearStorageBtn" style="background: #ef4444; color: white; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold;" onclick="if(confirm('คุณแน่ใจใช่ไหมที่จะล้างข้อมูลนักเรียนทุกคนที่สะสมไว้ในเครื่องนี้?')) { localStorage.removeItem('allStudentResults'); alert('ล้างคลังข้อมูลเรียบร้อยแล้วครับ'); location.reload(); }">🗑️ ล้างคลังข้อมูลสะสม</button>
+            </div>
+            <p id="dataCountText" style="margin: 8px 0 0 0; font-size: 13px; color: #78350f;">จำนวนข้อมูลที่บันทึกสะสมอยู่ตอนนี้: 0 คน</p>
         </div>
     </div>
 
