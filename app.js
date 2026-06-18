@@ -1,10 +1,32 @@
 window.onload = function() {
-    // ---------------- Digit Test ----------------
+    // ตั้งค่าตัวแปรสำหรับแบบทดสอบส่วนที่ 1
     let digitScore = 0;
-    let digitActive = true;
+    let digitActive = false; // ยังไม่เปิดใช้งานจนกว่าจะกดปุ่มต่อไป
+    let digitTime = 15;
     const nums = [];
 
-    // กำหนดจำนวนเลข 2 ให้มี 15 ตัวตามกติกา
+    // ผูกคำสั่งเข้ากับปุ่ม "ต่อไป (เริ่มทำแบบทดสอบ)"
+    const nextBtn = document.getElementById('nextToTestBtn');
+    if (nextBtn) {
+        nextBtn.onclick = function() {
+            // ตรวจสอบขั้นต้นว่ากรอกข้อมูลหรือยัง (เลือกที่จะแจ้งเตือนได้หากจำเป็น)
+            const idInput = document.getElementById('studentId').value;
+            if(!idInput) {
+                alert('กรุณากรอกเลขประจำตัวนักเรียนก่อนเริ่มทำแบบทดสอบครับ');
+                return;
+            }
+
+            // ซ่อนหน้ากรอกข้อมูล และเปิดหน้าทำแบบทดสอบขึ้นมา
+            document.getElementById('student-info-section').style.display = 'none';
+            document.getElementById('main-test-area').style.display = 'block';
+            
+            // เริ่มต้นเปิดการทำงานระบบทำสอบส่วนที่ 1 และเริ่มจับเวลาทันทีเมื่อเปิดหน้านี้
+            digitActive = true;
+            startDigitTimer();
+        };
+    }
+
+    // 1. เตรียมระบบโครงสร้างตารางเลข 2 จำนวน 15 ตัว
     for (let i = 0; i < 15; i++) nums.push(2);
 
     while (nums.length < 100) {
@@ -16,9 +38,6 @@ window.onload = function() {
     nums.sort(() => Math.random() - 0.5);
 
     const grid = document.getElementById('grid');
-    
-    // ตั้งค่าเวลาเริ่มต้นของส่วนที่ 1 เป็น 15 วินาทีอย่างถูกต้อง
-    let digitTime = 15; 
     const timerElement = document.getElementById('digitTimer');
     if (timerElement) {
         timerElement.textContent = digitTime;
@@ -35,7 +54,6 @@ window.onload = function() {
                 digitScore++;
                 c.classList.add('correct');
             } else {
-                // แตะผิดแต้มติดลบ แต่คะแนนสะสมจะไม่ต่ำกว่า 0
                 digitScore--;
                 if (digitScore < 0) digitScore = 0;
                 c.classList.add('wrong');
@@ -45,21 +63,25 @@ window.onload = function() {
         if (grid) grid.appendChild(c);
     });
 
-    // เริ่มระบบนับถอยหลัง 15 วินาทีอย่างถูกต้องเมื่อเปิดหน้าเว็บ
-    const digitCountdown = setInterval(() => {
-        digitTime--;
-        if (timerElement) {
-            timerElement.textContent = digitTime;
-        }
-        if (digitTime <= 0) {
-            clearInterval(digitCountdown);
-            digitActive = false;
-        }
-    }, 1000);
+    // ฟังก์ชันเริ่มจับเวลาส่วนที่ 1 (จะถูกเรียกหลังจากกดปุ่ม ต่อไป)
+    function startDigitTimer() {
+        const digitCountdown = setInterval(() => {
+            digitTime--;
+            if (timerElement) {
+                timerElement.textContent = digitTime;
+            }
+            if (digitTime <= 0) {
+                clearInterval(digitCountdown);
+                digitActive = false;
+                // แสดงข้อความเตือนเมื่อหมดเวลาส่วนที่ 1
+                alert('หมดเวลาสำหรับส่วนที่ 1 แล้วครับ กรุณาทำส่วนที่ 2 ต่อได้เลย');
+            }
+        }, 1000);
+    }
 
     // ---------------- Stroop Test ----------------
     const words = ['แดง', 'เขียว', 'น้ำเงิน', 'เหลือง'];
-    const colors = ['red', 'green', 'blue', '#FFFF00']; // ใช้สีเหลืองโทนสว่างชัดเจน
+    const colors = ['red', 'green', 'blue', '#FFFF00']; 
     let currentColor = '';
     let stroopCorrect = 0;
     let stroopActive = false;
@@ -71,7 +93,6 @@ window.onload = function() {
         startBtn.onclick = startStroop;
     }
 
-    // เชื่อมปุ่มสีแบบจับคู่ข้อความในหน้าเว็บ
     const colorButtons = {
         'แดง': 'red', 'เขียว': 'green', 'น้ำเงิน': 'blue', 'เหลือง': '#FFFF00'
     };
@@ -82,7 +103,6 @@ window.onload = function() {
         }
     });
 
-    // เชื่อมปุ่มคำนวณคะแนนรวม
     const calcBtn = document.getElementById('calculateBtn');
     if (calcBtn) {
         calcBtn.onclick = calculate;
@@ -112,7 +132,6 @@ window.onload = function() {
         let wordIndex = Math.floor(Math.random() * 4);
         let colorIndex = Math.floor(Math.random() * 4);
         
-        // บล็อกป้องกันไม่ให้คำและสีตรงกันอย่างเด็ดขาด
         while (wordIndex === colorIndex) {
             colorIndex = Math.floor(Math.random() * 4);
         }
@@ -127,7 +146,6 @@ window.onload = function() {
         }
     }
 
-    // ระบบตรวจเช็กคำตอบของ Stroop
     function answer(color){
         if(!stroopActive) return;
         if(color === currentColor){
@@ -146,7 +164,6 @@ window.onload = function() {
         if(attention >= 80) level = 'ดีมาก (Excellent)';
         else if(attention >= 60) level = 'ปกติ (Normal)';
 
-        // ดึงข้อมูลพื้นฐานที่นักเรียนกรอกเข้ามา
         const id = document.getElementById('studentId').value || 'ไม่ได้ระบุ';
         const grade = document.getElementById('studentGrade').value || 'ไม่ได้ระบุ';
         const gpa = document.getElementById('studentGpa').value || 'ไม่ได้ระบุ';
@@ -154,7 +171,6 @@ window.onload = function() {
         const screen = document.getElementById('screenTime').value || 'ไม่ได้ระบุ';
         const breakfast = document.getElementById('breakfastStatus').value || 'ไม่ได้ระบุ';
 
-        // วาดส่วนแสดงผลคะแนนและข้อมูลลงบนหน้าเว็บ
         document.getElementById('final').innerHTML = `
             <div style="text-align: left; background: #e0f2f1; padding: 15px; border-radius: 8px; margin-top: 15px; font-weight: normal; font-size: 16px;">
                 <p><b>ข้อมูลผู้ทดสอบ:</b> รหัส: ${id} | ชั้น: ${grade} | GPAX: ${gpa}</p>
