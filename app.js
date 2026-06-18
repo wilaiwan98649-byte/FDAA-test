@@ -36,9 +36,8 @@ window.onload = function() {
     }
     generateDistributedGrid();
 
+    // ปรับปรุง: ปลดล็อกเงื่อนไข ให้สามารถกดปุ่มต่อไปได้เสมอเพื่อป้องกันระบบค้าง
     document.getElementById('nextToTestBtn').onclick = function() {
-        const fields = ['studentId', 'studentGrade', 'studentGender', 'studentGpa', 'sleepHours', 'screenTime', 'breakfastDays', 'exerciseDays', 'waterGlasses', 'stressLevel'];
-        if (fields.some(f => !document.getElementById(f).value)) { alert('⚠️ กรุณากรอกข้อมูลและเลือกตัวเลือกให้ครบทุกช่องก่อนเริ่มแบบทดสอบครับ'); return; }
         document.getElementById('student-info-section').style.display = 'none';
         document.getElementById('main-test-area').style.display = 'block';
         digitActive = true; startDigitTimer();
@@ -83,33 +82,33 @@ window.onload = function() {
         const dScore = (digitScore / 15) * 100, sScore = Math.min(stroopCorrect * 5, 100);
         const attention = (dScore + sScore) / 2;
         
-        // คำนวณสารัตถะ Wellness Score (คะแนนเต็มฐาน 30)
         let wPts = 0;
-        const sleep = parseFloat(document.getElementById('sleepHours').value);
+        const sleep = parseFloat(document.getElementById('sleepHours').value) || 0;
         if(sleep >= 7 && sleep <= 9) wPts += 5; else if(sleep > 6) wPts += 3; else wPts += 1;
         
-        const screen = parseFloat(document.getElementById('screenTime').value);
+        const screen = parseFloat(document.getElementById('screenTime').value) || 0;
         if(screen <= 2) wPts += 5; else if(screen <= 4) wPts += 3; else wPts += 1;
         
-        const bFast = parseInt(document.getElementById('breakfastDays').value);
+        const bFast = parseInt(document.getElementById('breakfastDays').value) || 0;
         if(bFast == 7) wPts += 5; else if(bFast >= 3) wPts += 3; else wPts += 1;
         
-        const exer = parseInt(document.getElementById('exerciseDays').value);
+        const exer = parseInt(document.getElementById('exerciseDays').value) || 0;
         if(exer >= 3) wPts += 5; else if(exer >= 1) wPts += 3; else wPts += 1;
         
-        const water = parseInt(document.getElementById('waterGlasses').value);
+        const water = parseInt(document.getElementById('waterGlasses').value) || 0;
         if(water >= 6) wPts += 5; else if(water >= 3) wPts += 3; else wPts += 1;
         
-        wPts += parseInt(document.getElementById('stressLevel').value);
+        const stressVal = parseInt(document.getElementById('stressLevel').value) || 3;
+        wPts += stressVal;
         const wellness = (wPts / 30) * 100;
 
         const results = {
-            id: document.getElementById('studentId').value, 
-            grade: document.getElementById('studentGrade').value,
-            gender: document.getElementById('studentGender').value,
-            gpa: document.getElementById('studentGpa').value, 
+            id: document.getElementById('studentId').value || 'ไม่ได้ระบุ', 
+            grade: document.getElementById('studentGrade').value || 'ไม่ได้ระบุ',
+            gender: document.getElementById('studentGender').value || 'ไม่ได้ระบุ',
+            gpa: document.getElementById('studentGpa').value || 'ไม่ได้ระบุ', 
             sleep: sleep, screen: screen, bFast: bFast, exer: exer, water: water,
-            stress: document.getElementById('stressLevel').value, 
+            stress: stressVal, 
             attention: attention.toFixed(1), 
             wellness: wellness.toFixed(1)
         };
