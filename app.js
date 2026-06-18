@@ -5,7 +5,7 @@ window.onload = function() {
     let digitCountdown;
     let nums = [];
 
-    // ฟังก์ชันคอยอัปเดตตัวเลขจำนวนนักเรียนที่ถูกสะสมไว้ในเครื่องปัจจุบัน
+    // ฟังก์ชันอัปเดตจำนวนนักเรียนที่สะสมไว้ในเครื่องปัจจุบัน
     function updateDataCountDisplay() {
         const storedData = localStorage.getItem('allStudentResults');
         const count = storedData ? JSON.parse(storedData).length : 0;
@@ -66,6 +66,7 @@ window.onload = function() {
 
     generateDistributedGrid();
 
+    // บังคับกรอกข้อมูลทั่วไปให้ครบถ้วนถ้วนก่อนเริ่มทำ
     const nextBtn = document.getElementById('nextToTestBtn');
     if (nextBtn) {
         nextBtn.onclick = function() {
@@ -83,22 +84,20 @@ window.onload = function() {
 
             document.getElementById('student-info-section').style.display = 'none';
             document.getElementById('main-test-area').style.display = 'block';
+            
+            // ตั้งค่าเวลาเริ่มต้นให้ถูกต้องและสั่งเริ่มนับเวลาถอยหลัง 15 วินาที
             digitActive = true;
+            digitTime = 15;
+            document.getElementById('digitTimer').textContent = digitTime;
             startDigitTimer();
         };
     }
 
-    const timerElement = document.getElementById('digitTimer');
-    if (timerElement) {
-        timerElement.textContent = digitTime;
-    }
-
     function startDigitTimer() {
+        clearInterval(digitCountdown);
         digitCountdown = setInterval(() => {
             digitTime--;
-            if (timerElement) {
-                timerElement.textContent = digitTime;
-            }
+            document.getElementById('digitTimer').textContent = digitTime;
             if (digitTime <= 0) {
                 clearInterval(digitCountdown);
                 digitActive = false;
@@ -131,6 +130,7 @@ window.onload = function() {
         }
     });
 
+    // แก้ไอดีตรงนี้ให้ค้นหาคำสั่งปุ่ม calculateBtn บนหน้าเว็บเจอได้อย่างถูกต้อง 100%
     const calcBtn = document.getElementById('calculateBtn');
     if (calcBtn) {
         calcBtn.onclick = calculate;
@@ -191,14 +191,14 @@ window.onload = function() {
         if(attention >= 80) level = 'ดีมาก (Excellent)';
         else if(attention >= 60) level = 'ปกติ (Normal)';
 
-        const id = document.getElementById('studentId').value;
-        const grade = document.getElementById('studentGrade').value;
-        const gpa = document.getElementById('studentGpa').value;
-        const sleep = document.getElementById('sleepHours').value;
-        const screen = document.getElementById('screenTime').value;
+        const id = document.getElementById('studentId').value.trim();
+        const grade = document.getElementById('studentGrade').value.trim();
+        const gpa = document.getElementById('studentGpa').value.trim();
+        const sleep = document.getElementById('sleepHours').value.trim();
+        const screen = document.getElementById('screenTime').value.trim();
         const breakfast = document.getElementById('breakfastStatus').value;
 
-        // --- ระบบ AUTO SAVE บันทึกอัตโนมัติกันลืม ---
+        // --- ระบบ AUTO SAVE บันทึกอัตโนมัติลงเครื่องทันทีกันลืม ---
         const currentResult = {
             studentId: id,
             grade: grade,
@@ -208,15 +208,16 @@ window.onload = function() {
             breakfast: breakfast,
             digitScore: digitScore,
             stroopScore: stroopCorrect,
+            digitAcc: digitAcc.toFixed(1),
+            stroopAcc: stroopAcc.toFixed(1),
             attentionScore: attention.toFixed(1),
             level: level
         };
 
-        // ดึงอาเรย์เก่าจากเครื่องมาเติมตัวใหม่ต่อท้ายเข้าไป
         let localData = localStorage.getItem('allStudentResults');
         let dataArray = localData ? JSON.parse(localData) : [];
         
-        // ตรวจสอบเพื่อป้องกันการบันทึกข้อมูลซ้ำของรหัสนักเรียนเดิมในรอบเดียวกัน
+        // ป้องกันข้อมูลซ้ำซ้อนซ้ำเดิม
         const isDuplicate = dataArray.some(item => item.studentId === id && item.digitScore === digitScore && item.stroopScore === stroopCorrect);
         if(!isDuplicate) {
             dataArray.push(currentResult);
@@ -224,17 +225,42 @@ window.onload = function() {
             updateDataCountDisplay();
         }
 
-        // วาดหน้าผลสรุปการประเมิน
+        // วาดผลการสอบและ Dashboard สัดส่วนคะแนนย่อยแบบ Visual ไร้ปลั๊กอินภายนอก
         document.getElementById('final').innerHTML = `
-            <div style="text-align: left; background: #e0f2f1; padding: 15px; border-radius: 8px; margin-top: 15px; font-weight: normal; font-size: 16px;">
-                <p style="color: #00796b; font-weight: bold; margin-top: 0;">✅ บันทึกข้อมูลนักเรียนเข้าระบบรวมอัตโนมัติเรียบร้อยแล้ว</p>
+            <div style="text-align: left; background: #e0f2f1; padding: 20px; border-radius: 8px; margin-top: 15px; font-weight: normal; font-size: 16px; border: 1px solid #b2dfdb;">
+                <p style="color: #00796b; font-weight: bold; margin-top: 0; font-size: 18px;">✅ ประมวลผลและจัดเก็บสถิติลงระบบคลังสะสมเรียบร้อยแล้ว</p>
                 <p><b>ข้อมูลผู้ทดสอบ:</b> รหัส: ${id} | ชั้น: ${grade} | GPAX: ${gpa}</p>
                 <p><b>พฤติกรรมสุขภาพ:</b> นอนเมื่อคืน: ${sleep} ชม. | เวลาหน้าจอ: ${screen} ชม./วัน | มื้อเช้า: ${breakfast}</p>
+                
+                <div style="background: white; padding: 15px; border-radius: 8px; margin: 15px 0; border: 1px solid #cbd5e1;">
+                    <span style="font-weight: bold; color: #334155; display: block; margin-bottom: 10px;">📊 แผงวิเคราะห์สัดส่วนคะแนนรายบุคคล (Attention Dashboard):</span>
+                    
+                    <div style="margin-bottom: 10px;">
+                        <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 3px;">
+                            <span>🎯 ความแม่นยำการกวาดสายตา (ส่วนที่ 1)</span>
+                            <span style="font-weight: bold;">${digitAcc.toFixed(1)}%</span>
+                        </div>
+                        <div style="background: #e2e8f0; border-radius: 4px; height: 12px; overflow: hidden;">
+                            <div style="background: #0d9488; width: ${digitAcc}%; height: 100%;"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 3px;">
+                            <span>⚡ ความไวการแยกแยะสีสมาธิ (ส่วนที่ 2)</span>
+                            <span style="font-weight: bold;">${stroopAcc.toFixed(1)}%</span>
+                        </div>
+                        <div style="background: #e2e8f0; border-radius: 4px; height: 12px; overflow: hidden;">
+                            <div style="background: #3b82f6; width: ${stroopAcc}%; height: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+
                 <hr style="border: 0; border-top: 1px solid #b2dfdb;">
-                <p style="font-size: 22px; font-weight: bold; color: #00796b; margin: 5px 10px 10px 0; display: inline-block;">
+                <p style="font-size: 24px; font-weight: bold; color: #00796b; margin: 5px 10px 10px 0; display: inline-block;">
                     Attention Score = ${attention.toFixed(1)} (${level})
                 </p>
-                <button id="resetTestBtn" style="background: #64748b; color: white; padding: 8px 20px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold; float: right; margin-top: 5px;">🔄 สลับหน้าจอให้คนถัดไปทำต่อ</button>
+                <button id="resetTestBtn" style="background: #0d9488; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-size: 15px; font-weight: bold; float: right; margin-top: 5px;">🔄 ล้างฟอร์มและรับนักเรียนคนถัดไป</button>
                 <div style="clear: both;"></div>
             </div>
         `;
@@ -269,23 +295,23 @@ window.onload = function() {
             document.getElementById('student-info-section').style.display = 'block';
 
             generateDistributedGrid();
-            window.scrollTo(0,0); // เลื่อนหน้าจอกลับไปด้านบนสุด
+            window.scrollTo(0,0);
         };
     }
 
-    // --- ฟังก์ชันดาวน์โหลดข้อมูลรวมทั้งหมดเป็นไฟล์ CSV ไฟล์เดียว (สำหรับคุณครูใช้ตอนท้ายคาบ) ---
+    // --- ดาวน์โหลดสถิติสะสมรวมทั้งหมดเป็นไฟล์ CSV ไฟล์เดียว ---
     const downloadAllBtn = document.getElementById('downloadAllCsvBtn');
-    if(downloadAllBtn) {
+    if (downloadAllBtn) {
         downloadAllBtn.onclick = function() {
             const localData = localStorage.getItem('allStudentResults');
             const dataArray = localData ? JSON.parse(localData) : [];
 
             if(dataArray.length === 0) {
-                alert('❌ ยังไม่มีข้อมูลนักเรียนในระบบสะสมในขณะนี้ครับ');
+                alert('❌ ปัจจุบันไม่มีสถิตินักเรียนถูกสะสมจัดเก็บไว้ในคอมพิวเตอร์เครื่องนี้เลยครับ');
                 return;
             }
 
-            const headers = ['StudentID', 'Grade', 'GPAX', 'SleepHours', 'ScreenTime', 'Breakfast', 'Digit_Score', 'Stroop_Score', 'Attention_Score', 'Evaluation_Level'];
+            const headers = ['StudentID', 'Grade', 'GPAX', 'SleepHours', 'ScreenTime', 'Breakfast', 'Digit_Score', 'Stroop_Score', 'Digit_Accuracy_Percent', 'Stroop_Accuracy_Percent', 'Attention_Score_Total', 'Evaluation_Level'];
             const csvRows = [headers.join(',')];
 
             dataArray.forEach(item => {
@@ -298,8 +324,10 @@ window.onload = function() {
                     item.breakfast,
                     item.digitScore,
                     item.stroopScore,
+                    item.digitAcc || '0.0',
+                    item.stroopAcc || '0.0',
                     item.attentionScore,
-                    `"${item.level}"` // ใส่ฟันหนูครอบเพื่อความปลอดภัยกรณีมีเว้นวรรค
+                    `"${item.level}"`
                 ];
                 csvRows.push(row.join(','));
             });
@@ -309,7 +337,7 @@ window.onload = function() {
             const link = document.createElement("a");
             const url = URL.createObjectURL(blob);
             link.setAttribute("href", url);
-            link.setAttribute("download", `FocusMind_DAT_All_Results.csv`);
+            link.setAttribute("download", `FocusMind_DAT_Class_Report.csv`);
             link.style.visibility = 'hidden';
             document.body.appendChild(link);
             link.click();
