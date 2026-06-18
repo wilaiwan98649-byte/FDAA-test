@@ -38,7 +38,7 @@ window.onload = function() {
 
     document.getElementById('nextToTestBtn').onclick = function() {
         const fields = ['studentId', 'studentGrade', 'studentGender', 'studentGpa', 'sleepHours', 'screenTime', 'breakfastDays', 'exerciseDays', 'waterGlasses', 'stressLevel'];
-        if (fields.some(f => !document.getElementById(f).value)) { alert('⚠️ กรุณากรอกข้อมูลและเลือกตัวเลือกให้ครบทุกช่องก่อนเริ่มแบบทดสอบครับ'); return; }
+        if (fields.some(f => !document.getElementById(f).value)) { alert('⚠️ กรุณากรอกข้อมูลและเลือกตัวเลือกให้ครบทุกช่องก่อนเริ่มแบบทดสอบ'); return; }
         document.getElementById('student-info-section').style.display = 'none';
         document.getElementById('main-test-area').style.display = 'block';
         digitActive = true; startDigitTimer();
@@ -50,7 +50,7 @@ window.onload = function() {
         clearInterval(digitCountdown);
         digitCountdown = setInterval(() => {
             digitTime--; document.getElementById('digitTimer').textContent = digitTime;
-            if (digitTime <= 0) { clearInterval(digitCountdown); digitActive = false; alert('หมดเวลาส่วนที่ 1 ครับ กรุณาทำส่วนที่ 2 ต่อได้เลย'); }
+            if (digitTime <= 0) { clearInterval(digitCountdown); digitActive = false; alert('หมดเวลาส่วนที่ 1  กรุณาทำส่วนที่ 2 ต่อ'); }
         }, 1000);
     }
 
@@ -92,10 +92,10 @@ window.onload = function() {
             wPts += 5;
         } else if (sleep > 6) {
             wPts += 3;
-            healthTips.push('🛌 <b>เรื่องนอน:</b> ลองขยับเวลานอนให้เร็วขึ้นอีกนิด ให้ได้ 8 ชั่วโมง สมองจะเฟรชกว่านี้ครับ');
+            healthTips.push('🛌 <b>เรื่องนอน:</b> ลองปรับเวลานอนให้เร็วขึ้นอีกนิด ให้ได้ 8 ชั่วโมง สมองจะเฟรชกว่านี้');
         } else {
             wPts += 1;
-            healthTips.push('❌ <b>เรื่องนอน (ต่ำกว่าเกณฑ์):</b> ตอนนี้นอนน้อยเกินไปนะ ควรนอนให้ได้อย่างน้อย 7-8 ชั่วโมง เพื่อให้สมองได้พักเต็มที่และโฟกัสได้ดีขึ้นครับ');
+            healthTips.push('❌ <b>เรื่องนอน (ต่ำกว่าเกณฑ์):</b> ตอนนี้นอนน้อยไปนะ ควรนอนให้ได้อย่างน้อย 7-8 ชั่วโมง สมองจะได้พักเต็มที่และโฟกัสได้ดีขึ้น');
         }
         
         // 2. วิเคราะห์เวลาหน้าจอ
@@ -104,10 +104,10 @@ window.onload = function() {
             wPts += 5;
         } else if (screen <= 4) {
             wPts += 3;
-            healthTips.push('📱 <b>เวลาหน้าจอ:</b> เล่นเพลินไปนิดนึง ลองลดเวลาดูจอช่วงก่อนนอนลง จะช่วยให้หลับลึกขึ้นนะ');
+            healthTips.push('📱 <b>เวลาหน้าจอ:</b> เล่นเพลินไปนิดนึง ลองลดเวลาดูจอช่วงก่อนนอนลง จะช่วยให้หลับสนิทขึ้น');
         } else {
             wPts += 1;
-            healthTips.push('❌ <b>เวลาหน้าจอ (มากเกินไป):</b> ใช้จอเพื่อความบันเทิงนานเกินไปแล้ว ลองลดให้เหลือไม่เกินวันละ 2 ชั่วโมง สายตาและสมองจะได้ไม่ล้าครับ');
+            healthTips.push('❌ <b>เวลาหน้าจอ (มากเกินไป):</b> ใช้จอเพื่อความบันเทิงนานเกินไป ลองลดให้เหลือไม่เกินวันละ 2 ชั่วโมง สายตาและสมองจะได้ไม่ล้า');
         }
         
         // 3. วิเคราะห์อาหารเช้า
@@ -119,7 +119,7 @@ window.onload = function() {
             healthTips.push('🍳 <b>อาหารเช้า:</b> กินเพิ่มอีกหน่อยให้ครบทุกวัน สมองจะได้มีพลังงานสม่ำเสมอนะ');
         } else {
             wPts += 1;
-            healthTips.push('❌ <b>อาหารเช้า (น้อยเกินไป):</b> แทบไม่ได้กินมื้อเช้าเลย สมองไม่มีน้ำตาลไปใช้ทำให้สมาธิหลุดง่าย ควรพยายามกินอาหารเช้าทุกวันนะครับ');
+            healthTips.push('❌ <b>อาหารเช้า (น้อยเกินไป):</b> แทบไม่ได้กินมื้อเช้าเลย สมองไม่มีน้ำตาลไปใช้ ทำให้สมาธิหลุดง่าย พยายามกินอาหารเช้าทุกวันนะ');
         }
         
         // 4. วิเคราะห์การออกกำลังกาย
@@ -128,10 +128,10 @@ window.onload = function() {
             wPts += 5;
         } else if (exer >= 1) {
             wPts += 3;
-            healthTips.push('🏃‍♂️ <b>ออกกำลังกาย:</b> เพิ่มเป็นสัปดาห์ละ 3 วันดูนะ จะช่วยให้เลือดไหลเวียนไปเลี้ยงสมองได้ดีขึ้น');
+            healthTips.push('🏃‍♂️ <b>ออกกำลังกาย:</b> เพิ่มเป็นสัปดาห์ละ 3 วัน จะช่วยให้เลือดไปเลี้ยงสมองดีขึ้น');
         } else {
             wPts += 1;
-            healthTips.push('❌ <b>ออกกำลังกาย (น้อยเกินไป):</b> ร่างกายแทบไม่ได้ขยับเลย หาเวลาขยับร่างกายหรือเล่นกีฬาอย่างน้อย 30 นาทีต่อวัน สัปดาห์ละ 3 วัน จะช่วยให้กระปรี้กระเปร่าขึ้นครับ');
+            healthTips.push('❌ <b>ออกกำลังกาย (น้อยเกินไป):</b> ร่างกายแทบไม่ได้ขยับเลย หาเวลาออกกำลังกายวันละ 30 นาที อย่างน้อยสัปดาห์ละ 3 วัน จะช่วยให้กระปรี้กระเปร่าขึ้น');
         }
         
         // 5. วิเคราะห์การดื่มน้ำ
@@ -140,17 +140,17 @@ window.onload = function() {
             wPts += 5;
         } else if (water >= 3) {
             wPts += 3;
-            healthTips.push('💧 <b>การดื่มน้ำ:</b> จิบเพิ่มระหว่างวันอีกนิด ให้ได้วันละ 6-8 แก้ว ระบบประสาทจะทำงานได้ไวขึ้นครับ');
+            healthTips.push('💧 <b>การดื่มน้ำ:</b> จิบน้ำเพิ่มระหว่างวันอีกนิด ให้ได้วันละ 6-8 แก้ว ระบบประสาทจะทำงานดีขึ้น ผิวพรรณสดใส');
         } else {
             wPts += 1;
-            healthTips.push('❌ <b>การดื่มน้ำ (น้อยเกินไป):</b> ดื่มน้ำน้อยเกินไปแล้ว ถ้าร่างกายขาดน้ำสมองจะประมวลผลช้าลง ควรดื่มน้ำเปล่าให้ได้อย่างน้อยวันละ 6-8 แก้วนะ');
+            healthTips.push('❌ <b>การดื่มน้ำ (น้อยเกินไป):</b> ดื่มน้ำน้อยเกินไป ร่างกายอาจขาดน้ำทำให้สมองประมวลผลช้าลง ควรดื่มน้ำเปล่าให้ได้วันละ 6-8 แก้วนะ');
         }
         
         // 6. วิเคราะห์ระดับความเครียด
         const stressVal = parseInt(document.getElementById('stressLevel').value) || 3;
         wPts += stressVal;
         if (stressVal <= 2) {
-            healthTips.push('🧠 <b>ความเครียด:</b> ตอนนี้เครียดหรือล้าสมองมากเกินไปแล้ว หาเวลาพักสายตา ฟังเพลง หรือเดินยืดเส้นยืดสายบ้างนะครับ');
+            healthTips.push('🧠 <b>ความเครียด:</b> ตอนนี้เครียดหรือล้าสมองมากเกินไป หาเวลาพักสายตา ฟังเพลง หรือหากิจกรรมผ่อนคลายบ้างนะ');
         }
 
         const wellness = (wPts / 30) * 100;
@@ -159,20 +159,20 @@ window.onload = function() {
         let attentionLabel = '';
         let mainAdvice = '';
         if (attention >= 80) {
-            attentionLabel = '<span style="color:#0d9488; font-weight:bold;">ดีมาก เก่งมากครับ!</span>';
+            attentionLabel = '<span style="color:#0d9488; font-weight:bold;">ดีมาก เก่งมาก!</span>';
             mainAdvice = '🎉 สมองประมวลผลได้ว่องไวและแม่นยำสุด ๆ แสดงว่ามีความตั้งใจและจดจ่อสูงมาก';
         } else if (attention >= 60) {
-            attentionLabel = '<span style="color:#3b82f6; font-weight:bold;">ปกติ ตามมาตรฐานครับ</span>';
+            attentionLabel = '<span style="color:#3b82f6; font-weight:bold;">ปกติ ตามเกณฑ์มาตรฐาน</span>';
             mainAdvice = '👍 การจดจ่ออยู่ในเกณฑ์ปกติทั่วไป สามารถพัฒนาเพิ่มความเร็วและความแม่นยำขึ้นได้อีกนะ';
         } else {
             attentionLabel = '<span style="color:#ef4444; font-weight:bold;">ต่ำกว่าเกณฑ์ ควรปรับปรุงนะ</span>';
-            mainAdvice = '🎯 ตอนนี้คะแนนสมาธิค่อนข้างน้อย สมาธิอาจจะกำลังหลุดลอยหรือสมองล้าอยู่ครับ';
+            mainAdvice = '🎯 ตอนนี้คะแนนสมาธิค่อนข้างน้อย สมาธิอาจจะกำลังหลุดลอยหรือสมองล้าอยู่';
         }
 
         // มัดรวมคำแนะนำสุขภาพ (ถ้าทำดีทุกข้อจะชมเชย)
         let finalHealthAdvice = '';
         if (healthTips.length === 0) {
-            finalHealthAdvice = '🌟 <b>สุดยอดพฤติกรรมสุขภาพ!</b> รักษาวินัยการดูแลตัวเองแบบนี้ต่อไปเรื่อย ๆ เลยนะ ดีต่อร่างกายและสมองมากครับ';
+            finalHealthAdvice = '🌟 <b>สุดยอดพฤติกรรมสุขภาพ!</b> รักษาวินัยการดูแลตัวเองแบบนี้ต่อไปเรื่อย ๆ นะ ดีต่อร่างกายและสมองมาก';
         } else {
             finalHealthAdvice = healthTips.join('<br><br>');
         }
@@ -194,10 +194,10 @@ window.onload = function() {
             <div style="background:#e0f2f1; padding:20px; border-radius:10px; text-align:left; border: 1px solid #b2dfdb; font-family:'Prompt', sans-serif;">
                 <p style="color:#00796b; font-weight:bold; margin-top:0; font-size:18px;">✅ ประมวลผลและบันทึกคะแนนเรียบร้อยแล้ว</p>
                 
-                <p style="margin-bottom:5px;"><b>Attention Score (ดัชนีสมาธิ):</b> ${attention.toFixed(1)}% -> แปลผล: ${attentionLabel}</p>
+                <p style="margin-bottom:5px;"><b>Attention Score (สมาธิ):</b> ${attention.toFixed(1)}% -> แปลผล: ${attentionLabel}</p>
                 <div style="background:#ddd; height:12px; border-radius:6px; margin-bottom:15px; overflow:hidden;"><div style="background:#0d9488; width:${attention}%; height:100%;"></div></div>
                 
-                <p style="margin-bottom:5px;"><b>Wellness Score (ดัชนีสุขภาวะ):</b> ${wellness.toFixed(1)}%</p>
+                <p style="margin-bottom:5px;"><b>Wellness Score (สุขภาวะ):</b> ${wellness.toFixed(1)}%</p>
                 <div style="background:#ddd; height:12px; border-radius:6px; margin-bottom:15px; overflow:hidden;"><div style="background:#3b82f6; width:${wellness}%; height:100%;"></div></div>
                 
                 <div style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #cbd5e1; margin-top: 15px; font-size: 15px; line-height: 1.6; color: #334155;">
@@ -213,7 +213,7 @@ window.onload = function() {
 
     document.getElementById('downloadAllCsvBtn').onclick = function() {
         const data = JSON.parse(localStorage.getItem('allStudentResults') || '[]');
-        if(!data.length) return alert('ปัจจุบันยังไม่มีข้อมูลสะสมในระบบครับ');
+        if(!data.length) return alert('ปัจจุบันยังไม่มีข้อมูลสะสมในระบบ');
         const headers = ['StudentID', 'Grade', 'Gender', 'GPAX', 'SleepHours', 'ScreenTime', 'BreakfastDays', 'ExerciseDays', 'WaterGlasses', 'StressLevel', 'AttentionScore', 'WellnessScore'];
         const csv = "\uFEFF" + [headers.join(','), ...data.map(r => Object.values(r).join(','))].join('\n');
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
