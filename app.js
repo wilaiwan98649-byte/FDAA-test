@@ -1,347 +1,132 @@
 window.onload = function() {
-    let digitScore = 0;
-    let digitActive = false; 
-    let digitTime = 15;
-    let digitCountdown;
-    let nums = [];
+    let digitScore = 0, digitActive = false, digitTime = 15, digitCountdown, nums = [];
+    let stroopCorrect = 0, stroopActive = false, stroopTime = 30, stroopCountdown, currentColor = '';
+    const words = ['แดง', 'เขียว', 'น้ำเงิน', 'เหลือง'], colors = ['#D55E00', '#009E73', '#0072B2', '#F0E442'];
 
-    // ฟังก์ชันอัปเดตจำนวนนักเรียนที่สะสมไว้ในเครื่องปัจจุบัน
     function updateDataCountDisplay() {
         const storedData = localStorage.getItem('allStudentResults');
         const count = storedData ? JSON.parse(storedData).length : 0;
-        const countText = document.getElementById('dataCountText');
-        if (countText) {
-            countText.textContent = `จำนวนข้อมูลที่บันทึกสะสมอยู่ตอนนี้: ${count} คน`;
-        }
+        document.getElementById('dataCountText').textContent = `ข้อมูลสะสม: ${count} คน`;
     }
     updateDataCountDisplay();
 
     function generateDistributedGrid() {
-        nums = [];
-        for (let i = 0; i < 15; i++) nums.push(2);
-        while (nums.length < 100) {
-            let n = Math.floor(Math.random() * 8) + 1;
-            if (n >= 2) n++;
-            nums.push(n);
-        }
-
+        nums = []; for (let i = 0; i < 15; i++) nums.push(2);
+        while (nums.length < 100) { let n = Math.floor(Math.random() * 8) + 1; if (n >= 2) n++; nums.push(n); }
         let attempts = 0;
         while (attempts < 100) {
             nums.sort(() => Math.random() - 0.5);
             let hasAdjacentTwos = false;
             for (let i = 0; i < nums.length - 1; i++) {
-                if ((nums[i] === 2 && nums[i+1] === 2) || (i + 10 < 100 && nums[i] === 2 && nums[i+10] === 2)) {
-                    hasAdjacentTwos = true;
-                    break;
-                }
+                if ((nums[i] === 2 && nums[i+1] === 2) || (i + 10 < 100 && nums[i] === 2 && nums[i+10] === 2)) { hasAdjacentTwos = true; break; }
             }
-            if (!hasAdjacentTwos) break;
-            attempts++;
+            if (!hasAdjacentTwos) break; attempts++;
         }
-
-        const grid = document.getElementById('grid');
-        if (grid) {
-            grid.innerHTML = '';
-            nums.forEach(n => {
-                const c = document.createElement('div');
-                c.className = 'cell';
-                c.textContent = n;
-                c.onclick = () => {
-                    if (!digitActive || c.dataset.done) return;
-                    c.dataset.done = true;
-                    if (n === 2) {
-                        digitScore++;
-                        c.classList.add('correct');
-                    } else {
-                        digitScore--;
-                        if (digitScore < 0) digitScore = 0;
-                        c.classList.add('wrong');
-                    }
-                    document.getElementById('digitResult').textContent = 'คะแนน: ' + digitScore;
-                };
-                grid.appendChild(c);
-            });
-        }
+        const grid = document.getElementById('grid'); grid.innerHTML = '';
+        nums.forEach(n => {
+            const c = document.createElement('div'); c.className = 'cell'; c.textContent = n;
+            c.onclick = () => {
+                if (!digitActive || c.dataset.done) return; c.dataset.done = true;
+                if (n === 2) { digitScore++; c.classList.add('correct'); }
+                else { digitScore--; if (digitScore < 0) digitScore = 0; c.classList.add('wrong'); }
+                document.getElementById('digitResult').textContent = 'คะแนน: ' + digitScore;
+            };
+            grid.appendChild(c);
+        });
     }
-
     generateDistributedGrid();
 
-    // บังคับกรอกข้อมูลทั่วไปให้ครบถ้วนถ้วนก่อนเริ่มทำ
-    const nextBtn = document.getElementById('nextToTestBtn');
-    if (nextBtn) {
-        nextBtn.onclick = function() {
-            const id = document.getElementById('studentId').value.trim();
-            const grade = document.getElementById('studentGrade').value.trim();
-            const gpa = document.getElementById('studentGpa').value.trim();
-            const sleep = document.getElementById('sleepHours').value.trim();
-            const screen = document.getElementById('screenTime').value.trim();
-            const breakfast = document.getElementById('breakfastStatus').value;
-
-            if (!id || !grade || !gpa || !sleep || !screen || !breakfast) {
-                alert('⚠️ กรุณากรอกข้อมูลทั่วไปและพฤติกรรมสุขภาพให้ครบทุกช่องก่อนเริ่มทำแบบทดสอบครับ');
-                return;
-            }
-
-            document.getElementById('student-info-section').style.display = 'none';
-            document.getElementById('main-test-area').style.display = 'block';
-            
-            // ตั้งค่าเวลาเริ่มต้นให้ถูกต้องและสั่งเริ่มนับเวลาถอยหลัง 15 วินาที
-            digitActive = true;
-            digitTime = 15;
-            document.getElementById('digitTimer').textContent = digitTime;
-            startDigitTimer();
-        };
-    }
+    document.getElementById('nextToTestBtn').onclick = function() {
+        const fields = ['studentId', 'studentGrade', 'studentGpa', 'sleepHours', 'screenTime', 'breakfastDays', 'exerciseDays', 'waterGlasses', 'stressLevel'];
+        if (fields.some(f => !document.getElementById(f).value)) { alert('กรุณากรอกข้อมูลให้ครบทุกช่องก่อนเริ่มครับ'); return; }
+        document.getElementById('student-info-section').style.display = 'none';
+        document.getElementById('main-test-area').style.display = 'block';
+        digitActive = true; startDigitTimer();
+    };
 
     function startDigitTimer() {
-        clearInterval(digitCountdown);
         digitCountdown = setInterval(() => {
-            digitTime--;
-            document.getElementById('digitTimer').textContent = digitTime;
-            if (digitTime <= 0) {
-                clearInterval(digitCountdown);
-                digitActive = false;
-                alert('หมดเวลาสำหรับส่วนที่ 1 แล้วครับ กรุณาทำส่วนที่ 2 ต่อได้เลย');
-            }
+            digitTime--; document.getElementById('digitTimer').textContent = digitTime;
+            if (digitTime <= 0) { clearInterval(digitCountdown); digitActive = false; alert('หมดเวลาส่วนที่ 1 ครับ'); }
         }, 1000);
     }
 
-    // ---------------- Stroop Test ----------------
-    const words = ['แดง', 'เขียว', 'น้ำเงิน', 'เหลือง'];
-    const colors = ['#D55E00', '#009E73', '#0072B2', '#F0E442']; 
-    let currentColor = '';
-    let stroopCorrect = 0;
-    let stroopActive = false;
-    let stroopTime = 30; 
-    let stroopCountdown;
-
-    const startBtn = document.getElementById('startStroopBtn');
-    if (startBtn) {
-        startBtn.onclick = startStroop;
-    }
-
-    const colorButtons = {
-        'แดง': '#D55E00', 'เขียว': '#009E73', 'น้ำเงิน': '#0072B2', 'เหลือง': '#F0E442'
-    };
-    Object.keys(colorButtons).forEach(btnText => {
-        const btn = Array.from(document.querySelectorAll('button')).find(el => el.textContent.trim() === btnText);
-        if (btn) {
-            btn.onclick = () => answer(colorButtons[btnText]);
-        }
-    });
-
-    // แก้ไอดีตรงนี้ให้ค้นหาคำสั่งปุ่ม calculateBtn บนหน้าเว็บเจอได้อย่างถูกต้อง 100%
-    const calcBtn = document.getElementById('calculateBtn');
-    if (calcBtn) {
-        calcBtn.onclick = calculate;
-    }
-
-    function startStroop(){
-        if(stroopActive) return;
-        stroopActive = true;
-        stroopTime = 30;
-        stroopCorrect = 0;
-        document.getElementById('stroopResult').textContent = 'คะแนน: 0';
+    document.getElementById('startStroopBtn').onclick = function() {
+        if(stroopActive) return; stroopActive = true; stroopTime = 30; stroopCorrect = 0;
         nextWord();
         stroopCountdown = setInterval(()=>{
-            stroopTime--;
-            document.getElementById('stroopTimer').textContent = stroopTime;
-            if(stroopTime <= 0){
-                clearInterval(stroopCountdown);
-                stroopActive = false;
-                document.getElementById('stroopWord').textContent = 'หมดเวลา';
-            }
+            stroopTime--; document.getElementById('stroopTimer').textContent = stroopTime;
+            if(stroopTime <= 0){ clearInterval(stroopCountdown); stroopActive = false; document.getElementById('stroopWord').textContent = 'หมดเวลา'; }
         },1000);
-    }
+    };
 
     function nextWord(){
         if(!stroopActive) return;
-        let wordIndex = Math.floor(Math.random() * 4);
-        let colorIndex = Math.floor(Math.random() * 4);
-        while (wordIndex === colorIndex) {
-            colorIndex = Math.floor(Math.random() * 4);
-        }
-        const word = words[wordIndex];
-        currentColor = colors[colorIndex];
-        const el = document.getElementById('stroopWord');
-        if (el) {
-            el.textContent = word;
-            el.style.color = currentColor;
-        }
+        let w = Math.floor(Math.random()*4), c = Math.floor(Math.random()*4);
+        while(w === c) c = Math.floor(Math.random()*4);
+        currentColor = colors[c];
+        document.getElementById('stroopWord').textContent = words[w];
+        document.getElementById('stroopWord').style.color = currentColor;
     }
 
-    function answer(color){
-        if(!stroopActive) return;
-        if(color === currentColor){
-            stroopCorrect++;
-        } else {
-            stroopCorrect--;
-            if (stroopCorrect < 0) stroopCorrect = 0;
-        }
-        document.getElementById('stroopResult').textContent = 'คะแนน: ' + stroopCorrect;
-        nextWord();
-    }
+    const colorBtns = {'แดง': '#D55E00', 'เขียว': '#009E73', 'น้ำเงิน': '#0072B2', 'เหลือง': '#F0E442'};
+    Object.keys(colorBtns).forEach(t => {
+        const btn = Array.from(document.querySelectorAll('button')).find(el => el.textContent.trim() === t);
+        if(btn) btn.onclick = () => { if(!stroopActive) return; if(colorBtns[t] === currentColor) stroopCorrect++; else { stroopCorrect--; if(stroopCorrect<0) stroopCorrect=0; } document.getElementById('stroopResult').textContent = 'คะแนน: '+stroopCorrect; nextWord(); };
+    });
 
-    // ---------------- Attention Score & ผลสรุป ----------------
-    function calculate(){
-        const digitAcc = (digitScore / 15) * 100;
-        const stroopAcc = Math.min(stroopCorrect * 5, 100);
-        const attention = (digitAcc + stroopAcc) / 2;
-        let level = 'ควรปรับปรุง (Needs Improvement)';
-        if(attention >= 80) level = 'ดีมาก (Excellent)';
-        else if(attention >= 60) level = 'ปกติ (Normal)';
-
-        const id = document.getElementById('studentId').value.trim();
-        const grade = document.getElementById('studentGrade').value.trim();
-        const gpa = document.getElementById('studentGpa').value.trim();
-        const sleep = document.getElementById('sleepHours').value.trim();
-        const screen = document.getElementById('screenTime').value.trim();
-        const breakfast = document.getElementById('breakfastStatus').value;
-
-        // --- ระบบ AUTO SAVE บันทึกอัตโนมัติลงเครื่องทันทีกันลืม ---
-        const currentResult = {
-            studentId: id,
-            grade: grade,
-            gpa: gpa,
-            sleep: sleep,
-            screen: screen,
-            breakfast: breakfast,
-            digitScore: digitScore,
-            stroopScore: stroopCorrect,
-            digitAcc: digitAcc.toFixed(1),
-            stroopAcc: stroopAcc.toFixed(1),
-            attentionScore: attention.toFixed(1),
-            level: level
-        };
-
-        let localData = localStorage.getItem('allStudentResults');
-        let dataArray = localData ? JSON.parse(localData) : [];
+    document.getElementById('calculateBtn').onclick = function() {
+        const dScore = (digitScore / 15) * 100, sScore = Math.min(stroopCorrect * 5, 100);
+        const attention = (dScore + sScore) / 2;
         
-        // ป้องกันข้อมูลซ้ำซ้อนซ้ำเดิม
-        const isDuplicate = dataArray.some(item => item.studentId === id && item.digitScore === digitScore && item.stroopScore === stroopCorrect);
-        if(!isDuplicate) {
-            dataArray.push(currentResult);
-            localStorage.setItem('allStudentResults', JSON.stringify(dataArray));
-            updateDataCountDisplay();
-        }
+        // Wellness Score Calculation (Max 30 pts)
+        let wPts = 0;
+        const sleep = parseFloat(document.getElementById('sleepHours').value);
+        if(sleep >= 7 && sleep <= 9) wPts += 5; else if(sleep > 6) wPts += 3; else wPts += 1;
+        
+        const screen = parseFloat(document.getElementById('screenTime').value);
+        if(screen <= 2) wPts += 5; else if(screen <= 4) wPts += 3; else wPts += 1;
+        
+        const bFast = parseInt(document.getElementById('breakfastDays').value);
+        if(bFast == 7) wPts += 5; else if(bFast >= 3) wPts += 3; else wPts += 1;
+        
+        const exer = parseInt(document.getElementById('exerciseDays').value);
+        if(exer >= 3) wPts += 5; else if(exer >= 1) wPts += 3; else wPts += 1;
+        
+        const water = parseInt(document.getElementById('waterGlasses').value);
+        if(water >= 6) wPts += 5; else if(water >= 3) wPts += 3; else wPts += 1;
+        
+        wPts += parseInt(document.getElementById('stressLevel').value);
+        const wellness = (wPts / 30) * 100;
 
-        // วาดผลการสอบและ Dashboard สัดส่วนคะแนนย่อยแบบ Visual ไร้ปลั๊กอินภายนอก
+        const results = {
+            id: document.getElementById('studentId').value, grade: document.getElementById('studentGrade').value,
+            gpa: document.getElementById('studentGpa').value, sleep: sleep, screen: screen, bFast: bFast, exer: exer, water: water,
+            stress: document.getElementById('stressLevel').value, attention: attention.toFixed(1), wellness: wellness.toFixed(1)
+        };
+
+        let data = JSON.parse(localStorage.getItem('allStudentResults') || '[]');
+        data.push(results); localStorage.setItem('allStudentResults', JSON.stringify(data));
+        updateDataCountDisplay();
+
         document.getElementById('final').innerHTML = `
-            <div style="text-align: left; background: #e0f2f1; padding: 20px; border-radius: 8px; margin-top: 15px; font-weight: normal; font-size: 16px; border: 1px solid #b2dfdb;">
-                <p style="color: #00796b; font-weight: bold; margin-top: 0; font-size: 18px;">✅ ประมวลผลและจัดเก็บสถิติลงระบบคลังสะสมเรียบร้อยแล้ว</p>
-                <p><b>ข้อมูลผู้ทดสอบ:</b> รหัส: ${id} | ชั้น: ${grade} | GPAX: ${gpa}</p>
-                <p><b>พฤติกรรมสุขภาพ:</b> นอนเมื่อคืน: ${sleep} ชม. | เวลาหน้าจอ: ${screen} ชม./วัน | มื้อเช้า: ${breakfast}</p>
-                
-                <div style="background: white; padding: 15px; border-radius: 8px; margin: 15px 0; border: 1px solid #cbd5e1;">
-                    <span style="font-weight: bold; color: #334155; display: block; margin-bottom: 10px;">📊 แผงวิเคราะห์สัดส่วนคะแนนรายบุคคล (Attention Dashboard):</span>
-                    
-                    <div style="margin-bottom: 10px;">
-                        <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 3px;">
-                            <span>🎯 ความแม่นยำการกวาดสายตา (ส่วนที่ 1)</span>
-                            <span style="font-weight: bold;">${digitAcc.toFixed(1)}%</span>
-                        </div>
-                        <div style="background: #e2e8f0; border-radius: 4px; height: 12px; overflow: hidden;">
-                            <div style="background: #0d9488; width: ${digitAcc}%; height: 100%;"></div>
-                        </div>
-                    </div>
+            <div style="background:#e0f2f1; padding:20px; border-radius:10px; text-align:left;">
+                <p><b>Attention Score:</b> ${attention.toFixed(1)}%</p>
+                <div style="background:#ddd; height:10px; border-radius:5px;"><div style="background:#0d9488; width:${attention}%; height:100%; border-radius:5px;"></div></div>
+                <p><b>Wellness Score:</b> ${wellness.toFixed(1)}%</p>
+                <div style="background:#ddd; height:10px; border-radius:5px;"><div style="background:#3b82f6; width:${wellness}%; height:100%; border-radius:5px;"></div></div>
+                <button onclick="location.reload()" style="margin-top:20px; background:#64748b; color:white; padding:10px; border:none; border-radius:5px; cursor:pointer;">รับนักเรียนคนถัดไป</button>
+            </div>`;
+    };
 
-                    <div>
-                        <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 3px;">
-                            <span>⚡ ความไวการแยกแยะสีสมาธิ (ส่วนที่ 2)</span>
-                            <span style="font-weight: bold;">${stroopAcc.toFixed(1)}%</span>
-                        </div>
-                        <div style="background: #e2e8f0; border-radius: 4px; height: 12px; overflow: hidden;">
-                            <div style="background: #3b82f6; width: ${stroopAcc}%; height: 100%;"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <hr style="border: 0; border-top: 1px solid #b2dfdb;">
-                <p style="font-size: 24px; font-weight: bold; color: #00796b; margin: 5px 10px 10px 0; display: inline-block;">
-                    Attention Score = ${attention.toFixed(1)} (${level})
-                </p>
-                <button id="resetTestBtn" style="background: #0d9488; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-size: 15px; font-weight: bold; float: right; margin-top: 5px;">🔄 ล้างฟอร์มและรับนักเรียนคนถัดไป</button>
-                <div style="clear: both;"></div>
-            </div>
-        `;
-
-        // ปุ่มคำสั่งย้อนกลับไปเริ่มทำใหม่สำหรับนักเรียนคนถัดไป
-        document.getElementById('resetTestBtn').onclick = function() {
-            document.getElementById('studentId').value = '';
-            document.getElementById('studentGrade').value = '';
-            document.getElementById('studentGpa').value = '';
-            document.getElementById('sleepHours').value = '';
-            document.getElementById('screenTime').value = '';
-            document.getElementById('breakfastStatus').value = '';
-
-            digitScore = 0;
-            digitTime = 15;
-            digitActive = false;
-            clearInterval(digitCountdown);
-            document.getElementById('digitResult').textContent = 'คะแนน: 0';
-            document.getElementById('digitTimer').textContent = '15';
-
-            stroopCorrect = 0;
-            stroopTime = 30;
-            stroopActive = false;
-            clearInterval(stroopCountdown);
-            document.getElementById('stroopResult').textContent = 'คะแนน: 0';
-            document.getElementById('stroopTimer').textContent = '30';
-            document.getElementById('stroopWord').textContent = 'คำถามจะขึ้นตรงนี้';
-            document.getElementById('stroopWord').style.color = '#1e293b';
-
-            document.getElementById('final').textContent = 'ยังไม่ได้ประมวลผล';
-            document.getElementById('main-test-area').style.display = 'none';
-            document.getElementById('student-info-section').style.display = 'block';
-
-            generateDistributedGrid();
-            window.scrollTo(0,0);
-        };
-    }
-
-    // --- ดาวน์โหลดสถิติสะสมรวมทั้งหมดเป็นไฟล์ CSV ไฟล์เดียว ---
-    const downloadAllBtn = document.getElementById('downloadAllCsvBtn');
-    if (downloadAllBtn) {
-        downloadAllBtn.onclick = function() {
-            const localData = localStorage.getItem('allStudentResults');
-            const dataArray = localData ? JSON.parse(localData) : [];
-
-            if(dataArray.length === 0) {
-                alert('❌ ปัจจุบันไม่มีสถิตินักเรียนถูกสะสมจัดเก็บไว้ในคอมพิวเตอร์เครื่องนี้เลยครับ');
-                return;
-            }
-
-            const headers = ['StudentID', 'Grade', 'GPAX', 'SleepHours', 'ScreenTime', 'Breakfast', 'Digit_Score', 'Stroop_Score', 'Digit_Accuracy_Percent', 'Stroop_Accuracy_Percent', 'Attention_Score_Total', 'Evaluation_Level'];
-            const csvRows = [headers.join(',')];
-
-            dataArray.forEach(item => {
-                const row = [
-                    item.studentId,
-                    item.grade,
-                    item.gpa,
-                    item.sleep,
-                    item.screen,
-                    item.breakfast,
-                    item.digitScore,
-                    item.stroopScore,
-                    item.digitAcc || '0.0',
-                    item.stroopAcc || '0.0',
-                    item.attentionScore,
-                    `"${item.level}"`
-                ];
-                csvRows.push(row.join(','));
-            });
-
-            const csvContent = "\uFEFF" + csvRows.join('\n');
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement("a");
-            const url = URL.createObjectURL(blob);
-            link.setAttribute("href", url);
-            link.setAttribute("download", `FocusMind_DAT_Class_Report.csv`);
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        };
-    }
+    document.getElementById('downloadAllCsvBtn').onclick = function() {
+        const data = JSON.parse(localStorage.getItem('allStudentResults') || '[]');
+        if(!data.length) return alert('ไม่มีข้อมูลสะสมครับ');
+        const headers = ['ID', 'Grade', 'GPAX', 'Sleep', 'ScreenTime', 'BreakfastDays', 'ExerciseDays', 'Water', 'StressLevel', 'AttentionScore', 'WellnessScore'];
+        const csv = "\uFEFF" + [headers.join(','), ...data.map(r => Object.values(r).join(','))].join('\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a"); link.href = URL.createObjectURL(blob);
+        link.download = "FocusMind_DAT_Wellness_Report.csv"; link.click();
+    };
 };
+
