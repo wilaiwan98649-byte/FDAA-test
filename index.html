@@ -59,9 +59,9 @@
             <h2>ส่วนที่ 2: แบบทดสอบความไวและการแยกแยะสี (Stroop Test)</h2>
             <p>คำชี้แจง: เลือก "สีของคำ" ที่มองเห็น (ห้ามเลือกตามคำอ่าน) ให้เร็วและถูกต้องที่สุด</p>
             
-            <div class="stroop-container">
-                <div id="stroopWord" class="stroop-word">คำถามจะขึ้นตรงนี้</div>
-                <p id="stroopTimerContainer">เวลาคงเหลือ: <span id="stroopTimer">30</span> วินาที</p>
+            <div class="stroop-container" style="background: #f1f5f9; padding: 30px; border-radius: 12px; margin-bottom: 20px;">
+                <div id="stroopWord" class="stroop-word" style="font-size: 54px; font-weight: 800; margin-bottom: 15px; letter-spacing: 2px;">คำถามจะขึ้นตรงนี้</div>
+                <p id="stroopTimerContainer" style="font-size: 18px;">เวลาคงเหลือ: <span id="stroopTimer" style="font-weight: bold; color: #ef4444;">30</span> วินาที</p>
                 <button id="startStroopBtn" class="btn-start">เริ่มทำส่วนที่ 2</button>
             </div>
 
@@ -76,6 +76,12 @@
             <div style="margin-top: 30px; border-top: 2px dashed #cbd5e1; padding-top: 20px;">
                 <button id="calculateBtn" style="background: #0d9488; color: white; padding: 12px 30px; border: none; border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold;">ประมวลผลคะแนนสรุป</button>
                 <h2 id="final" style="margin-top: 20px; color: #1e293b;">ยังไม่ได้ประมวลผล</h2>
+            </div>
+            
+            <div style="margin-top: 40px; background: #fafafa; padding: 15px; border-radius: 8px; font-size: 13px; text-align: left; color: #64748b; border: 1px solid #f1f5f9;">
+                <p style="margin: 0 0 5px 0; font-weight: bold; color: #475569;">เกณฑ์การประเมินอ้างอิงตามมาตรฐานสากล:</p>
+                <p style="margin: 3px 0;">• Digit Cancellation Test (Sustained Attention Index) - Lezak, M. D. (2012). <i>Neuropsychological Assessment</i>.</p>
+                <p style="margin: 3px 0;">• Stroop Color-Word Test (Cognitive Inhibition Base) - Scarpina, F., & Tagini, S. (2015). <i>Frontiers in Psychology</i>.</p>
             </div>
         </div>
     </div>
