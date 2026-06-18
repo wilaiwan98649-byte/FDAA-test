@@ -15,7 +15,7 @@
 
         <div id="student-info-section" style="background: #f8fafc; padding: 20px; border-radius: 12px; margin-bottom: 30px; border: 1px solid #e2e8f0; text-align: left;">
             <h3 style="margin-top: 0; color: #0d9488;">ข้อมูลพื้นฐานของนักเรียน</h3>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
                 <div>
                     <label><b>เลขประจำตัวนักเรียน:</b></label>
                     <input type="text" id="studentId" placeholder="เช่น 12345" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
@@ -45,33 +45,38 @@
                     </select>
                 </div>
             </div>
+            <div style="text-align: center;">
+                <button id="nextToTestBtn" style="background: #0d9488; color: white; padding: 12px 40px; border: none; border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold;">ต่อไป (เริ่มทำแบบทดสอบ)</button>
+            </div>
         </div>
 
-        <h2>ส่วนที่ 1: แบบทดสอบความแม่นยำในการกวาดสายตา (ค้นหาเลข 2)</h2>
-        <p>คำชี้แจง: ค้นหาและแตะที่ตัวเลข 2 ทุกตัวให้ครบ 15 ตัว ภายในเวลา <span id="digitTimer">15</span> วินาที (หากกดผิดคะแนนจะติดลบ)</p>
-        <div id="grid" class="grid"></div>
-        <p id="digitResult">คะแนน: 0</p>
+        <div id="main-test-area" style="display: none;">
+            <h2>ส่วนที่ 1: แบบทดสอบความแม่นยำในการกวาดสายตา (ค้นหาเลข 2)</h2>
+            <p>คำชี้แจง: ค้นหาและแตะที่ตัวเลข 2 ทุกตัวให้ครบ 15 ตัว ภายในเวลา <span id="digitTimer">15</span> วินาที (หากกดผิดคะแนนจะติดลบ)</p>
+            <div id="grid" class="grid"></div>
+            <p id="digitResult">คะแนน: 0</p>
 
-        <h2>ส่วนที่ 2: แบบทดสอบความไวและการแยกแยะสี (Stroop Test)</h2>
-        <p>คำชี้แจง: เลือก "สีของคำ" ที่มองเห็น (ห้ามเลือกตามคำอ่าน) ให้เร็วและถูกต้องที่สุด</p>
-        
-        <div class="stroop-container">
-            <div id="stroopWord" class="stroop-word">คำถามจะขึ้นตรงนี้</div>
-            <p id="stroopTimerContainer">เวลาคงเหลือ: <span id="stroopTimer">30</span> วินาที</p>
-            <button id="startStroopBtn" class="btn-start">เริ่มทำส่วนที่ 2</button>
-        </div>
+            <h2>ส่วนที่ 2: แบบทดสอบความไวและการแยกแยะสี (Stroop Test)</h2>
+            <p>คำชี้แจง: เลือก "สีของคำ" ที่มองเห็น (ห้ามเลือกตามคำอ่าน) ให้เร็วและถูกต้องที่สุด</p>
+            
+            <div class="stroop-container">
+                <div id="stroopWord" class="stroop-word">คำถามจะขึ้นตรงนี้</div>
+                <p id="stroopTimerContainer">เวลาคงเหลือ: <span id="stroopTimer">30</span> วินาที</p>
+                <button id="startStroopBtn" class="btn-start">เริ่มทำส่วนที่ 2</button>
+            </div>
 
-        <div class="options">
-            <button class="btn btn-red">แดง</button>
-            <button class="btn btn-green">เขียว</button>
-            <button class="btn btn-blue">น้ำเงิน</button>
-            <button class="btn btn-yellow">เหลือง</button>
-        </div>
-        <p id="stroopResult">คะแนน: 0</p>
+            <div class="options">
+                <button class="btn btn-red">แดง</button>
+                <button class="btn btn-green">เขียว</button>
+                <button class="btn btn-blue">น้ำเงิน</button>
+                <button class="btn btn-yellow">เหลือง</button>
+            </div>
+            <p id="stroopResult">คะแนน: 0</p>
 
-        <div style="margin-top: 30px; border-top: 2px dashed #cbd5e1; padding-top: 20px;">
-            <button id="calculateBtn" style="background: #0d9488; color: white; padding: 12px 30px; border: none; border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold;">ประมวลผลคะแนนสรุป</button>
-            <h2 id="final" style="margin-top: 20px; color: #1e293b;">ยังไม่ได้ประมวลผล</h2>
+            <div style="margin-top: 30px; border-top: 2px dashed #cbd5e1; padding-top: 20px;">
+                <button id="calculateBtn" style="background: #0d9488; color: white; padding: 12px 30px; border: none; border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold;">ประมวลผลคะแนนสรุป</button>
+                <h2 id="final" style="margin-top: 20px; color: #1e293b;">ยังไม่ได้ประมวลผล</h2>
+            </div>
         </div>
     </div>
 
