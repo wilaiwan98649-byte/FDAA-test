@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FocusMind Digital Attention Assessment (FDAA)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="card">
+  <h1>FocusMind Digital Attention Assessment</h1>
+
+  <h2>Digit Cancellation Test</h2>
+  <p>แตะเลข 2 ทุกตัวภายใน <span id="digitTimer">30</span> วินาที</p>
+  <div id="grid" class="grid"></div>
+  <p id="digitResult">คะแนน: 0</p>
+
+  <hr>
+
+  <h2>Stroop Test</h2>
+  <p>เลือกสีของตัวอักษร ไม่ใช่คำที่อ่าน</p>
+  <p>เวลาคงเหลือ: <span id="stroopTimer">30</span> วินาที</p>
+
+  <div id="stroopWord" class="stroop">กดเริ่ม</div>
+
+  <button onclick="startStroop()">เริ่ม Stroop Test</button>
+
+  <div class="buttons">
+    <button onclick="answer('red')">แดง</button>
+    <button onclick="answer('green')">เขียว</button>
+    <button onclick="answer('blue')">น้ำเงิน</button>
+    <button onclick="answer('orange')">เหลือง</button>
+  </div>
+
+  <p id="stroopResult">คะแนน: 0</p>
+
+  <hr>
+
+  <button onclick="calculate()">คำนวณ Attention Index</button>
+  <h2 id="final">ยังไม่ได้คำนวณ</h2>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
