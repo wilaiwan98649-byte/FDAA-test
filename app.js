@@ -1,25 +1,20 @@
 window.onload = function() {
-    // ตั้งค่าตัวแปรสำหรับแบบทดสอบส่วนที่ 1
+    // ---------------- Digit Test ----------------
     let digitScore = 0;
     let digitActive = false; 
     let digitTime = 15;
     const nums = [];
 
-    // ผูกคำสั่งเข้ากับปุ่ม "ต่อไป (เริ่มทำแบบทดสอบ)"
     const nextBtn = document.getElementById('nextToTestBtn');
     if (nextBtn) {
         nextBtn.onclick = function() {
-            // ซ่อนหน้ากรอกข้อมูล และเปิดหน้าทำแบบทดสอบขึ้นมา
             document.getElementById('student-info-section').style.display = 'none';
             document.getElementById('main-test-area').style.display = 'block';
-            
-            // เริ่มต้นเปิดการทำงานระบบทำสอบส่วนที่ 1 และเริ่มจับเวลาถอยหลังทันที
             digitActive = true;
             startDigitTimer();
         };
     }
 
-    // 1. เตรียมระบบโครงสร้างตารางเลข 2 จำนวน 15 ตัว
     for (let i = 0; i < 15; i++) nums.push(2);
 
     while (nums.length < 100) {
@@ -56,7 +51,6 @@ window.onload = function() {
         if (grid) grid.appendChild(c);
     });
 
-    // ฟังก์ชันเริ่มจับเวลาส่วนที่ 1
     function startDigitTimer() {
         const digitCountdown = setInterval(() => {
             digitTime--;
@@ -73,7 +67,10 @@ window.onload = function() {
 
     // ---------------- Stroop Test ----------------
     const words = ['แดง', 'เขียว', 'น้ำเงิน', 'เหลือง'];
-    const colors = ['red', 'green', 'blue', '#FFFF00']; 
+    
+    // ปรับเฉดสีใหม่ให้ปลอดภัยสำหรับคนตาบอดสี (Color Blindness Friendly)
+    // #D55E00 = แดงอิฐเข้ม, #009E73 = เขียวอมฟ้า, #0072B2 = น้ำเงินชัด, #F0E442 = เหลืองสว่าง
+    const colors = ['#D55E00', '#009E73', '#0072B2', '#F0E442']; 
     let currentColor = '';
     let stroopCorrect = 0;
     let stroopActive = false;
@@ -85,8 +82,9 @@ window.onload = function() {
         startBtn.onclick = startStroop;
     }
 
+    // จับคู่ปุ่มกดในระบบให้ตรงกับเฉดสีใหม่ที่แสดงผล
     const colorButtons = {
-        'แดง': 'red', 'เขียว': 'green', 'น้ำเงิน': 'blue', 'เหลือง': '#FFFF00'
+        'แดง': '#D55E00', 'เขียว': '#009E73', 'น้ำเงิน': '#0072B2', 'เหลือง': '#F0E442'
     };
     Object.keys(colorButtons).forEach(btnText => {
         const btn = Array.from(document.querySelectorAll('button')).find(el => el.textContent.trim() === btnText);
@@ -138,10 +136,14 @@ window.onload = function() {
         }
     }
 
+    // ระบบตรวจเช็กคำตอบ Stroop แบบมีระเบียบหักคะแนน (ผิดติดลบ แต่ไม่ต่ำกว่า 0)
     function answer(color){
         if(!stroopActive) return;
         if(color === currentColor){
             stroopCorrect++;
+        } else {
+            stroopCorrect--;
+            if (stroopCorrect < 0) stroopCorrect = 0; // ป้องกันไม่ให้คะแนนรวมติดลบต่ำกว่าศูนย์
         }
         document.getElementById('stroopResult').textContent = 'คะแนน: ' + stroopCorrect;
         nextWord();
