@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>การประเมินสมาธิและการจดจ่อด้วยระบบดิจิทัล (FocusMind DAT)</title>
+    <title>การประเมินสมาธิและการจดจ่อ (FocusMind DAT)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -14,35 +14,51 @@
         <h1>การประเมินสมาธิและการจดจ่อด้วยระบบดิจิทัล (FocusMind DAT)</h1>
 
         <div id="student-info-section" style="background: #f8fafc; padding: 20px; border-radius: 12px; margin-bottom: 30px; border: 1px solid #e2e8f0; text-align: left;">
-            <h3 style="margin-top: 0; color: #0d9488;">ข้อมูลพื้นฐานของนักเรียน</h3>
-            <p style="color: #ef4444; font-size: 14px; margin-top: -5px; margin-bottom: 15px;">* จำเป็นต้องกรอกข้อมูลให้ครบทุกช่องก่อนเริ่มทำแบบทดสอบ</p>
+            <h3 style="margin-top: 0; color: #0d9488;">ข้อมูลพื้นฐานและพฤติกรรมสุขภาพ</h3>
+            <p style="color: #64748b; font-size: 14px; margin-bottom: 15px;">* กรุณากรอกข้อมูลตามความเป็นจริงเพื่อการประมวลผลที่แม่นยำ</p>
+            
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
                 <div>
                     <label><b>เลขประจำตัวนักเรียน:</b></label>
-                    <input type="text" id="studentId" placeholder="เช่น 12345" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
+                    <input type="text" id="studentId" placeholder="เช่น 12345" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;">
                 </div>
                 <div>
                     <label><b>ระดับชั้น:</b></label>
-                    <input type="text" id="studentGrade" placeholder="เช่น ม.4/1" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
+                    <input type="text" id="studentGrade" placeholder="เช่น ม.4/1" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;">
                 </div>
                 <div>
-                    <label><b>เกรดเฉลี่ยรวมล่าสุด (GPAX):</b></label>
-                    <input type="number" id="studentGpa" step="0.01" min="0" max="4" placeholder="เช่น 3.50" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
+                    <label><b>เกรดเฉลี่ย (GPAX):</b></label>
+                    <input type="number" id="studentGpa" step="0.01" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;">
                 </div>
                 <div>
-                    <label><b>จำนวนชั่วโมงการนอนเมื่อคืน (ชั่วโมง):</b></label>
-                    <input type="number" id="sleepHours" step="0.5" min="0" placeholder="เช่น 7" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
+                    <label><b>เมื่อคืนนอนหลับกี่ชั่วโมง:</b></label>
+                    <input type="number" id="sleepHours" step="0.5" placeholder="เช่น 7" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;">
                 </div>
                 <div>
-                    <label><b>เวลาดูจอ (เฉลี่ยต่อวัน/ชั่วโมง):</b></label>
-                    <input type="number" id="screenTime" step="0.5" min="0" placeholder="เช่น 4.5" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
+                    <label><b>เวลาหน้าจอ (บันเทิง/ชม.ต่อวัน):</b></label>
+                    <input type="number" id="screenTime" step="0.5" placeholder="เช่น 2.5" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;">
                 </div>
                 <div>
-                    <label><b>การรับประทานอาหารเช้าวันนี้:</b></label>
-                    <select id="breakfastStatus" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
-                        <option value="">-- เลือกรายการ --</option>
-                        <option value="รับประทานแล้ว">รับประทานอาหารเช้าแล้ว</option>
-                        <option value="ไม่ได้รับประทาน">ไม่ได้รับประทานอาหารเช้า</option>
+                    <label><b>กินอาหารเช้าบ่อยแค่ไหน (วันต่อสัปดาห์):</b></label>
+                    <input type="number" id="breakfastDays" min="0" max="7" placeholder="0-7 วัน" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;">
+                </div>
+                <div>
+                    <label><b>ออกกำลังกายบ่อยแค่ไหน (วันต่อสัปดาห์):</b></label>
+                    <input type="number" id="exerciseDays" min="0" max="7" placeholder="0-7 วัน" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;">
+                </div>
+                <div>
+                    <label><b>ดื่มน้ำเปล่าประมาณกี่แก้วต่อวัน:</b></label>
+                    <input type="number" id="waterGlasses" min="0" placeholder="เช่น 8" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;">
+                </div>
+                <div style="grid-column: span 2;">
+                    <label><b>ระดับความเครียด/เหนื่อยล้าในตอนนี้:</b></label>
+                    <select id="stressLevel" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;">
+                        <option value="">-- เลือกความรู้สึก --</option>
+                        <option value="5">สดชื่น/ไม่เครียดเลย</option>
+                        <option value="4">ปกติ/เครียดเล็กน้อย</option>
+                        <option value="3">ปานกลาง/เริ่มเพลีย</option>
+                        <option value="2">เครียดมาก/เหนื่อย</option>
+                        <option value="1">ล้ามาก/ไม่มีสมาธิ</option>
                     </select>
                 </div>
             </div>
@@ -52,17 +68,16 @@
         </div>
 
         <div id="main-test-area" style="display: none;">
-            <h2>ส่วนที่ 1: แบบทดสอบความแม่นยำในการกวาดสายตา (ค้นหาเลข 2)</h2>
-            <p>คำชี้แจง: ค้นหาและแตะที่ตัวเลข 2 ทุกตัวให้ครบ 15 ตัว ภายในเวลา <span id="digitTimer">15</span> วินาที (หากกดผิดคะแนนจะติดลบ)</p>
+            <h2>ส่วนที่ 1: การกวาดสายตา (ค้นหาเลข 2)</h2>
+            <p>กติกา: ค้นหาเลข 2 ให้ครบ 15 ตัว ภายในเวลา <span id="digitTimer">15</span> วินาที (กดผิดติดลบ)</p>
             <div id="grid" class="grid"></div>
             <p id="digitResult">คะแนน: 0</p>
 
-            <h2>ส่วนที่ 2: แบบทดสอบความไวและการแยกแยะสี (Stroop Test)</h2>
-            <p>คำชี้แจง: เลือก "สีของคำ" ที่มองเห็น (ห้ามเลือกตามคำอ่าน) ให้เร็วและถูกต้องที่สุด</p>
-            
+            <h2>ส่วนที่ 2: ความไวและสมาธิ (Stroop Test)</h2>
+            <p>กติกา: เลือก "สีของคำ" ที่เห็น (ห้ามเลือกตามคำอ่าน)</p>
             <div class="stroop-container" style="background: #f1f5f9; padding: 30px; border-radius: 12px; margin-bottom: 20px;">
-                <div id="stroopWord" class="stroop-word" style="font-size: 54px; font-weight: 800; margin-bottom: 15px; letter-spacing: 2px;">คำถามจะขึ้นตรงนี้</div>
-                <p id="stroopTimerContainer" style="font-size: 18px;">เวลาคงเหลือ: <span id="stroopTimer">30</span> วินาที</p>
+                <div id="stroopWord" class="stroop-word" style="font-size: 54px; font-weight: 800; margin-bottom: 15px;">เตรียมตัว...</div>
+                <p>เวลาคงเหลือ: <span id="stroopTimer">30</span> วินาที</p>
                 <button id="startStroopBtn" class="btn-start">เริ่มทำส่วนที่ 2</button>
             </div>
 
@@ -78,24 +93,161 @@
                 <button id="calculateBtn" style="background: #0d9488; color: white; padding: 12px 30px; border: none; border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold;">ประมวลผลคะแนนสรุป</button>
                 <h2 id="final" style="margin-top: 20px; color: #1e293b;">ยังไม่ได้ประมวลผล</h2>
             </div>
-            
-            <div style="margin-top: 40px; background: #fafafa; padding: 15px; border-radius: 8px; font-size: 13px; text-align: left; color: #64748b; border: 1px solid #f1f5f9;">
-                <p style="margin: 0 0 5px 0; font-weight: bold; color: #475569;">เกณฑ์การประเมินอ้างอิงตามมาตรฐานสากล:</p>
-                <p style="margin: 3px 0;">• Digit Cancellation Test (Sustained Attention Index) - Lezak, M. D. (2012). <i>Neuropsychological Assessment</i>.</p>
-                <p style="margin: 3px 0;">• Stroop Color-Word Test (Cognitive Inhibition Base) - Scarpina, F., & Tagini, S. (2015). <i>Frontiers in Psychology</i>.</p>
-            </div>
         </div>
 
         <div id="teacher-control-zone" style="margin-top: 25px; background: #fffbeb; padding: 15px; border-radius: 12px; border: 1px solid #fef08a; text-align: left;">
-            <span style="font-weight: bold; color: #b45309; font-size: 14px;">🛠️ แผงควบคุมระบบสะสมข้อมูลสำหรับผู้วิจัย/คุณครู:</span>
+            <span style="font-weight: bold; color: #b45309; font-size: 14px;">🛠️ ระบบสะสมข้อมูลสำหรับผู้วิจัย:</span>
             <div style="margin-top: 10px; display: flex; gap: 10px;">
-                <button id="downloadAllCsvBtn" style="background: #b45309; color: white; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold;">📥 ดาวน์โหลดข้อมูลนักเรียนทั้งหมด (.CSV)</button>
-                <button id="clearStorageBtn" style="background: #ef4444; color: white; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold;" onclick="if(confirm('คุณแน่ใจใช่ไหมที่จะล้างข้อมูลนักเรียนทุกคนที่สะสมไว้ในเครื่องนี้?')) { localStorage.removeItem('allStudentResults'); alert('ล้างคลังข้อมูลเรียบร้อยแล้วครับ'); location.reload(); }">🗑️ ล้างคลังข้อมูลสะสม</button>
+                <button id="downloadAllCsvBtn" style="background: #b45309; color: white; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold;">📥 ดาวน์โหลดไฟล์สะสมรวม (.CSV)</button>
+                <button onclick="if(confirm('ยืนยันล้างข้อมูลสะสม?')){localStorage.removeItem('allStudentResults');location.reload();}" style="background: #ef4444; color: white; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold;">🗑️ ล้างข้อมูลใหม่ทั้งหมด</button>
             </div>
-            <p id="dataCountText" style="margin: 8px 0 0 0; font-size: 13px; color: #78350f;">จำนวนข้อมูลที่บันทึกสะสมอยู่ตอนนี้: 0 คน</p>
+            <p id="dataCountText" style="margin: 8px 0 0 0; font-size: 13px; color: #78350f;">ข้อมูลสะสม: 0 คน</p>
         </div>
     </div>
-
     <script src="app.js"></script>
 </body>
 </html>
+
+#### 2. แก้ไขไฟล์ `app.js`
+เพิ่มอัลกอริทึมคำนวณ Wellness Score และระบบบันทึก CSV ครับ:
+[คลิกเพื่อแก้ไข app.js](https://github.com/wilaiwan98649-byte/FDAA-test/edit/main/app.js)
+
+```javascript
+window.onload = function() {
+    let digitScore = 0, digitActive = false, digitTime = 15, digitCountdown, nums = [];
+    let stroopCorrect = 0, stroopActive = false, stroopTime = 30, stroopCountdown, currentColor = '';
+    const words = ['แดง', 'เขียว', 'น้ำเงิน', 'เหลือง'], colors = ['#D55E00', '#009E73', '#0072B2', '#F0E442'];
+
+    function updateDataCountDisplay() {
+        const storedData = localStorage.getItem('allStudentResults');
+        const count = storedData ? JSON.parse(storedData).length : 0;
+        document.getElementById('dataCountText').textContent = `ข้อมูลสะสม: ${count} คน`;
+    }
+    updateDataCountDisplay();
+
+    function generateDistributedGrid() {
+        nums = []; for (let i = 0; i < 15; i++) nums.push(2);
+        while (nums.length < 100) { let n = Math.floor(Math.random() * 8) + 1; if (n >= 2) n++; nums.push(n); }
+        let attempts = 0;
+        while (attempts < 100) {
+            nums.sort(() => Math.random() - 0.5);
+            let hasAdjacentTwos = false;
+            for (let i = 0; i < nums.length - 1; i++) {
+                if ((nums[i] === 2 && nums[i+1] === 2) || (i + 10 < 100 && nums[i] === 2 && nums[i+10] === 2)) { hasAdjacentTwos = true; break; }
+            }
+            if (!hasAdjacentTwos) break; attempts++;
+        }
+        const grid = document.getElementById('grid'); grid.innerHTML = '';
+        nums.forEach(n => {
+            const c = document.createElement('div'); c.className = 'cell'; c.textContent = n;
+            c.onclick = () => {
+                if (!digitActive || c.dataset.done) return; c.dataset.done = true;
+                if (n === 2) { digitScore++; c.classList.add('correct'); }
+                else { digitScore--; if (digitScore < 0) digitScore = 0; c.classList.add('wrong'); }
+                document.getElementById('digitResult').textContent = 'คะแนน: ' + digitScore;
+            };
+            grid.appendChild(c);
+        });
+    }
+    generateDistributedGrid();
+
+    document.getElementById('nextToTestBtn').onclick = function() {
+        const fields = ['studentId', 'studentGrade', 'studentGpa', 'sleepHours', 'screenTime', 'breakfastDays', 'exerciseDays', 'waterGlasses', 'stressLevel'];
+        if (fields.some(f => !document.getElementById(f).value)) { alert('กรุณากรอกข้อมูลให้ครบทุกช่องก่อนเริ่มครับ'); return; }
+        document.getElementById('student-info-section').style.display = 'none';
+        document.getElementById('main-test-area').style.display = 'block';
+        digitActive = true; startDigitTimer();
+    };
+
+    function startDigitTimer() {
+        digitCountdown = setInterval(() => {
+            digitTime--; document.getElementById('digitTimer').textContent = digitTime;
+            if (digitTime <= 0) { clearInterval(digitCountdown); digitActive = false; alert('หมดเวลาส่วนที่ 1 ครับ'); }
+        }, 1000);
+    }
+
+    document.getElementById('startStroopBtn').onclick = function() {
+        if(stroopActive) return; stroopActive = true; stroopTime = 30; stroopCorrect = 0;
+        nextWord();
+        stroopCountdown = setInterval(()=>{
+            stroopTime--; document.getElementById('stroopTimer').textContent = stroopTime;
+            if(stroopTime <= 0){ clearInterval(stroopCountdown); stroopActive = false; document.getElementById('stroopWord').textContent = 'หมดเวลา'; }
+        },1000);
+    };
+
+    function nextWord(){
+        if(!stroopActive) return;
+        let w = Math.floor(Math.random()*4), c = Math.floor(Math.random()*4);
+        while(w === c) c = Math.floor(Math.random()*4);
+        currentColor = colors[c];
+        document.getElementById('stroopWord').textContent = words[w];
+        document.getElementById('stroopWord').style.color = currentColor;
+    }
+
+    const colorBtns = {'แดง': '#D55E00', 'เขียว': '#009E73', 'น้ำเงิน': '#0072B2', 'เหลือง': '#F0E442'};
+    Object.keys(colorBtns).forEach(t => {
+        const btn = Array.from(document.querySelectorAll('button')).find(el => el.textContent.trim() === t);
+        if(btn) btn.onclick = () => { if(!stroopActive) return; if(colorBtns[t] === currentColor) stroopCorrect++; else { stroopCorrect--; if(stroopCorrect<0) stroopCorrect=0; } document.getElementById('stroopResult').textContent = 'คะแนน: '+stroopCorrect; nextWord(); };
+    });
+
+    document.getElementById('calculateBtn').onclick = function() {
+        const dScore = (digitScore / 15) * 100, sScore = Math.min(stroopCorrect * 5, 100);
+        const attention = (dScore + sScore) / 2;
+        
+        // Wellness Score Calculation (Max 30 pts)
+        let wPts = 0;
+        const sleep = parseFloat(document.getElementById('sleepHours').value);
+        if(sleep >= 7 && sleep <= 9) wPts += 5; else if(sleep > 6) wPts += 3; else wPts += 1;
+        
+        const screen = parseFloat(document.getElementById('screenTime').value);
+        if(screen <= 2) wPts += 5; else if(screen <= 4) wPts += 3; else wPts += 1;
+        
+        const bFast = parseInt(document.getElementById('breakfastDays').value);
+        if(bFast == 7) wPts += 5; else if(bFast >= 3) wPts += 3; else wPts += 1;
+        
+        const exer = parseInt(document.getElementById('exerciseDays').value);
+        if(exer >= 3) wPts += 5; else if(exer >= 1) wPts += 3; else wPts += 1;
+        
+        const water = parseInt(document.getElementById('waterGlasses').value);
+        if(water >= 6) wPts += 5; else if(water >= 3) wPts += 3; else wPts += 1;
+        
+        wPts += parseInt(document.getElementById('stressLevel').value);
+        const wellness = (wPts / 30) * 100;
+
+        const results = {
+            id: document.getElementById('studentId').value, grade: document.getElementById('studentGrade').value,
+            gpa: document.getElementById('studentGpa').value, sleep: sleep, screen: screen, bFast: bFast, exer: exer, water: water,
+            stress: document.getElementById('stressLevel').value, attention: attention.toFixed(1), wellness: wellness.toFixed(1)
+        };
+
+        let data = JSON.parse(localStorage.getItem('allStudentResults') || '[]');
+        data.push(results); localStorage.setItem('allStudentResults', JSON.stringify(data));
+        updateDataCountDisplay();
+
+        document.getElementById('final').innerHTML = `
+            <div style="background:#e0f2f1; padding:20px; border-radius:10px; text-align:left;">
+                <p><b>Attention Score:</b> ${attention.toFixed(1)}%</p>
+                <div style="background:#ddd; height:10px; border-radius:5px;"><div style="background:#0d9488; width:${attention}%; height:100%; border-radius:5px;"></div></div>
+                <p><b>Wellness Score:</b> ${wellness.toFixed(1)}%</p>
+                <div style="background:#ddd; height:10px; border-radius:5px;"><div style="background:#3b82f6; width:${wellness}%; height:100%; border-radius:5px;"></div></div>
+                <button onclick="location.reload()" style="margin-top:20px; background:#64748b; color:white; padding:10px; border:none; border-radius:5px; cursor:pointer;">รับนักเรียนคนถัดไป</button>
+            </div>`;
+    };
+
+    document.getElementById('downloadAllCsvBtn').onclick = function() {
+        const data = JSON.parse(localStorage.getItem('allStudentResults') || '[]');
+        if(!data.length) return alert('ไม่มีข้อมูลสะสมครับ');
+        const headers = ['ID', 'Grade', 'GPAX', 'Sleep', 'ScreenTime', 'BreakfastDays', 'ExerciseDays', 'Water', 'StressLevel', 'AttentionScore', 'WellnessScore'];
+        const csv = "\uFEFF" + [headers.join(','), ...data.map(r => Object.values(r).join(','))].join('\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a"); link.href = URL.createObjectURL(blob);
+        link.download = "FocusMind_DAT_Wellness_Report.csv"; link.click();
+    };
+};
+
+**สิ่งที่ระบบใหม่ทำได้:**
+1. **คำถาม 6 ด้าน:** ปรับคำให้เป็นธรรมชาติและกระชับ (เช่น "นอนหลับ", "ดื่มน้ำ")
+2. **Wellness Score:** คำนวณเป็นแถบสีน้ำเงินคู่กับแถบสีเขียวของ Attention Score
+3. **CSV อัตโนมัติ:** บันทึกข้อมูลทั้ง 11 คอลัมน์ (รวม Wellness Score) ลงในไฟล์เดียวกันเพื่อวิเคราะห์ความสัมพันธ์ของสุขภาพกับสมาธิครับ
+
+ลองอัปเดตและทดสอบใช้งานดูนะครับ เว็บจะดูเป็นมืออาชีพขึ้นมากเลยครับ!
