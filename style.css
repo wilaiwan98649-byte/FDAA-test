@@ -1,0 +1,51 @@
+
+body{
+  font-family:'Prompt',sans-serif;
+  background:#f3f6fb;
+  padding:20px;
+}
+
+.card{
+  max-width:1000px;
+  margin:auto;
+  background:white;
+  padding:24px;
+  border-radius:20px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(10,1fr);
+  gap:8px;
+}
+
+.cell{
+  height:48px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#e9eef7;
+  border-radius:12px;
+  font-size:22px;
+  cursor:pointer;
+}
+
+.correct{background:#bdeec5;}
+.wrong{background:#ffd3d3;}
+
+.stroop{
+  font-size:46px;
+  text-align:center;
+  font-weight:600;
+  margin:20px 0;
+}
+
+.buttons button,
+button{
+  font-family:'Prompt',sans-serif;
+  padding:12px 18px;
+  margin:5px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+}
