@@ -1,5 +1,5 @@
 window.onload = function() {
-    // ---------------- Digit Test ----------------
+    // ตั้งค่าตัวแปรสำหรับแบบทดสอบส่วนที่ 1
     let digitScore = 0;
     let digitActive = false; 
     let digitTime = 15;
@@ -67,9 +67,6 @@ window.onload = function() {
 
     // ---------------- Stroop Test ----------------
     const words = ['แดง', 'เขียว', 'น้ำเงิน', 'เหลือง'];
-    
-    // ปรับเฉดสีใหม่ให้ปลอดภัยสำหรับคนตาบอดสี (Color Blindness Friendly)
-    // #D55E00 = แดงอิฐเข้ม, #009E73 = เขียวอมฟ้า, #0072B2 = น้ำเงินชัด, #F0E442 = เหลืองสว่าง
     const colors = ['#D55E00', '#009E73', '#0072B2', '#F0E442']; 
     let currentColor = '';
     let stroopCorrect = 0;
@@ -82,7 +79,6 @@ window.onload = function() {
         startBtn.onclick = startStroop;
     }
 
-    // จับคู่ปุ่มกดในระบบให้ตรงกับเฉดสีใหม่ที่แสดงผล
     const colorButtons = {
         'แดง': '#D55E00', 'เขียว': '#009E73', 'น้ำเงิน': '#0072B2', 'เหลือง': '#F0E442'
     };
@@ -136,14 +132,13 @@ window.onload = function() {
         }
     }
 
-    // ระบบตรวจเช็กคำตอบ Stroop แบบมีระเบียบหักคะแนน (ผิดติดลบ แต่ไม่ต่ำกว่า 0)
     function answer(color){
         if(!stroopActive) return;
         if(color === currentColor){
             stroopCorrect++;
         } else {
             stroopCorrect--;
-            if (stroopCorrect < 0) stroopCorrect = 0; // ป้องกันไม่ให้คะแนนรวมติดลบต่ำกว่าศูนย์
+            if (stroopCorrect < 0) stroopCorrect = 0;
         }
         document.getElementById('stroopResult').textContent = 'คะแนน: ' + stroopCorrect;
         nextWord();
@@ -165,15 +160,41 @@ window.onload = function() {
         const screen = document.getElementById('screenTime') ? document.getElementById('screenTime').value : 'ไม่ได้ระบุ';
         const breakfast = document.getElementById('breakfastStatus') ? document.getElementById('breakfastStatus').value : 'ไม่ได้ระบุ';
 
+        // วาดส่วนแสดงผลคะแนนและเพิ่มปุ่มดาวน์โหลดไฟล์ CSV ล่างสุด
         document.getElementById('final').innerHTML = `
             <div style="text-align: left; background: #e0f2f1; padding: 15px; border-radius: 8px; margin-top: 15px; font-weight: normal; font-size: 16px;">
                 <p><b>ข้อมูลผู้ทดสอบ:</b> รหัส: ${id} | ชั้น: ${grade} | GPAX: ${gpa}</p>
                 <p><b>พฤติกรรมสุขภาพ:</b> นอนเมื่อคืน: ${sleep} ชม. | เวลาหน้าจอ: ${screen} ชม./วัน | มื้อเช้า: ${breakfast}</p>
                 <hr style="border: 0; border-top: 1px solid #b2dfdb;">
-                <p style="font-size: 22px; font-weight: bold; color: #00796b; margin: 5px 0 0 0;">
+                <p style="font-size: 22px; font-weight: bold; color: #00796b; margin: 5px 10px 10px 0; display: inline-block;">
                     Attention Score = ${attention.toFixed(1)} (${level})
                 </p>
+                <button id="downloadCsvBtn" style="background: #00796b; color: white; padding: 6px 15px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold; float: right; margin-top: 5px;">📥 ดาวน์โหลดข้อมูล (.CSV)</button>
+                <div style="clear: both;"></div>
             </div>
         `;
+
+        // ผูกฟังก์ชันสร้างและดาวน์โหลดไฟล์ CSV เมื่อกดปุ่มดาวน์โหลด
+        document.getElementById('downloadCsvBtn').onclick = function() {
+            // หัวคอลัมน์ของตารางข้อมูล (Header)
+            const headers = ['StudentID', 'Grade', 'GPAX', 'SleepHours', 'ScreenTime', 'Breakfast', 'Digit_Score', 'Stroop_Score', 'Attention_Score', 'Evaluation_Level'];
+            
+            // ข้อมูลแถวของนักเรียนคนนี้
+            const rowData = [id, grade, gpa, sleep, screen, breakfast, digitScore, stroopCorrect, attention.toFixed(1), level];
+            
+            // รวม Header และ Data เข้าด้วยกัน และคั่นด้วยเครื่องหมายจุลภาค (Comma)
+            const csvContent = "\uFEFF" + [headers.join(','), rowData.join(',')].join('\n');
+            
+            // สร้างลิงก์เสมือนเพื่อทำการดาวน์โหลดไฟล์ลงในเครื่องคอมพิวเตอร์
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", `FocusMind_DAT_Result_${id}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        };
     }
 };
